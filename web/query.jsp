@@ -30,7 +30,14 @@
 
         <form align="center"name="add"  method="get" action="add.jsp">
             <input class="btn btn-primary" type="submit" name="add" value="Add new user" >
+            <hr/>
+
         </form>
+
+        <form align="center"name="add"  method="get" action="auction.jsp">
+            <input class="btn btn-primary" type="submit" name="add" value="Add new auction" >
+        </form>
+
     </div>
 </div>
 </body>

@@ -93,11 +93,11 @@ public class UsersServlet extends HttpServlet {
 	        	        
 	        	        
 	        	    }
-		        	
 		        		out.println("<td>");
-		    
-	        	        out.println("<button> Show user's auctions </button>");
-	        	        
+	        	        out.println(" <form align=\"center\" name=\"queryForm\" action=\"AuctionsServlet\" method=\"post\">\n" +
+								" <button name=\"query\" value = \"select * from AUCTIONSONLINE  \"> Show user's auctions </button>" +
+								"</form>");
+
 	        	        out.println("</td>");
 		        	
 		        	out.println("</tr>");
