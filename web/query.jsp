@@ -16,13 +16,17 @@
 
 <div class="d-flex flex-column justify-content-center align-items-center h-100">
     <div>
-        <form align="center" name="queryForm" action="UsersServlet" method="post">
-            <button class="btn btn-outline-success" name="query" value = "select * from users"> Show All Users </button>
-            <hr/>
-            <button class="btn btn-secondary" name="query" value = "SELECT * FROM users WHERE id = ( SELECT MAX(id) FROM users ) ;"> Show Latest User </button>
+
+        <form align="center" name="queryForm" action="login.jsp" method="post">
+            <button class="btn btn-outline-success" name="query" value = "select * from users"> LOGIN</button>
             <hr/>
         </form>
+        <form align="center"name="add"  method="get" action="add.jsp">
+            <button class="btn btn-secondary" name="query" value = "SELECT * FROM users WHERE id = ( SELECT MAX(id) FROM users ) ;"> ADD NEW USER </button>
+        <hr/>
 
+    </form>
+<%--
         <form align="center" name="queryForm" action="AuctionsServlet" method="post">
             <button class="btn btn-secondary"name="query" value = "select * from AUCTIONSONLINE "> Show all auctions </button>
             <hr/>
@@ -34,10 +38,7 @@
 
         </form>
 
-        <form align="center"name="add"  method="get" action="auction.jsp">
-            <input class="btn btn-primary" type="submit" name="add" value="Add new auction" >
-        </form>
-
+--%>
     </div>
 </div>
 </body>

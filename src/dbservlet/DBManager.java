@@ -10,10 +10,10 @@ public class DBManager {
 	private static String _port = "3306";
 	private static String _user = "root";
 	private static String _pass = "mysql";
-	private static String _db = "itsecurity";
-	
+	private static String _db = "Knowledgebase";
+
 	private static Connection connection;
-	
+
 	public static Connection getConnection() throws ClassNotFoundException, SQLException {
 		if (connection == null) {
 			Class.forName("com.mysql.jdbc.Driver");

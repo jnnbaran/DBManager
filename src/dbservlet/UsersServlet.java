@@ -14,6 +14,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static java.lang.System.out;
+
 /**
  * Servlet implementation class UsersServlet
  */
@@ -40,12 +42,22 @@ public class UsersServlet extends HttpServlet {
 	    PrintWriter out = response.getWriter();
 	    JButton button = new JButton("blah");
 
-	      
-	    try {
+
+		String id = request.getParameter("id");
+		String first_name = request.getParameter("first_name");
+		String last_name = request.getParameter("last_name");
+
+		out.println("HELLO HERE");
+
+
+
+
+		try {
 	        Class.forName("com.mysql.jdbc.Driver");
-			
+			String first_namee = "Monika";
+
 	        String query = request.getParameter("query");
-	        out.println("query: "+query);
+	        out.println("query: " +query + "( " + id + " , " + first_namee + " , " + last_name  + " ); " );
 	        
 	        if (query.length() > 6 && 
 				( 
@@ -134,6 +146,9 @@ public class UsersServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
+
+
 	}
+
 
 }

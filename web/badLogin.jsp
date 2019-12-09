@@ -20,41 +20,17 @@
 </head>
 
 <body>
-
-<div class="d-flex flex-column justify-content-center align-items-center h-100">
-
-    <h1> hello, add new user here</h1>
-    <hr/>
-
-
-    <form action="AddServlet" method="get">
-        Id:<br>
-        <input type="text" name="id"><br>
-
-
-        Username:<br>
-        <input type="text" name="first_name"><br>
-
-        Password:<br>
-        <input type="password" name="pwd" type="text"><br>
-
-        Confirm password:<br>
-        <input type="password" name="pwd" type="text"><br> <br>
-
-
-
-        <button class="btn btn-outline-success d-flex align-items-center" id="btn" name="query" value="add"> OK </button>
-
-    </form>
-
-    <hr/>
-
-
-    <form align="center"name="cancel"  method="get" action="query.jsp">
-        <button class="btn btn-outline-success"  name="query" value = " "> ANULUJ </button>
-    </form>
-
+<div class="alert alert-danger" role="alert">
+    Invalid login credentials!
 </div>
+
+<hr/>
+
+
+<form align="center"name="cancel"  method="get" action="query.jsp">
+    <button class="btn btn-outline-success"  name="query" value = " "> TRY AGAIN </button>
+</form>
+
 </body>
 
 </html>
