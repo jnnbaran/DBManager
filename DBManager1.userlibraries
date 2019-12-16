@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eclipse-userlibraries>
+  <library name="Java EE 6-Java EE 6">
+    <archive path="/home/joanna/Desktop/DBManager1/lib/javax.annotation.jar" />
+    <archive path="/home/joanna/Desktop/DBManager1/lib/javax.transaction.jar" />
+    <archive path="/home/joanna/Desktop/DBManager1/lib/javax.jms.jar" />
+    <archive path="/home/joanna/Desktop/DBManager1/lib/javax.servlet.jsp.jstl.jar" />
+    <archive path="/home/joanna/Desktop/DBManager1/lib/javax.resource.jar" />
+    <archive path="/home/joanna/Desktop/DBManager1/lib/javax.ejb.jar" />
+    <archive path="/home/joanna/Desktop/DBManager1/lib/javax.persistence.jar" />
+  </library>
+  <library name="mysql-connector-java-5.1.6-bin">
+    <archive path="/home/joanna/Desktop/DBManager1/web/WEB-INF/lib/mysql-connector-java-5.1.6-bin.jar" />
+  </library>
+  <library name="tomcat">
+    <archive path="/opt/apache-tomcat-8.5.47/lib/jsp-api.jar" />
+    <archive path="/opt/apache-tomcat-8.5.47/lib/servlet-api.jar" />
+  </library>
+  <library name="tomcat-api">
+    <archive path="/opt/apache-tomcat-8.5.47/lib/tomcat-api.jar" />
+  </library>
+  <library name="tomcat-util">
+    <archive path="/opt/apache-tomcat-8.5.47/lib/tomcat-util.jar" />
+  </library>
+</eclipse-userlibraries>
+

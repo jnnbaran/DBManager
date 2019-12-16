@@ -21,25 +21,13 @@
             <button class="btn btn-outline-success" name="query" value = "select * from users"> LOGIN</button>
             <hr/>
         </form>
-        <form align="center"name="add"  method="get" action="add.jsp">
-            <button class="btn btn-secondary" name="query" value = "SELECT * FROM users WHERE id = ( SELECT MAX(id) FROM users ) ;"> ADD NEW USER </button>
-        <hr/>
+        <form align="center"name="add"  method="get" action="add.jsp">  <hr/>
 
-    </form>
-<%--
-        <form align="center" name="queryForm" action="AuctionsServlet" method="post">
-            <button class="btn btn-secondary"name="query" value = "select * from AUCTIONSONLINE "> Show all auctions </button>
-            <hr/>
-        </form>
+            <form action="AddQuest" method="get">
 
-        <form align="center"name="add"  method="get" action="add.jsp">
-            <input class="btn btn-primary" type="submit" name="add" value="Add new user" >
-            <hr/>
+            <button class="btn btn-secondary" name="query" > ADD NEW USER </button>
 
-        </form>
+            </form>
 
---%>
-    </div>
-</div>
 </body>
 </html>

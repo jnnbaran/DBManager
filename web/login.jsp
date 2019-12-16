@@ -24,19 +24,24 @@
 <div class="d-flex flex-column justify-content-center align-items-center h-100">
 
     <h1> hello, WELCOME AGAIN! :)</h1>
+    <hr/>
 
     <form action="UsersLogin" method="get">
+        <hr/>
     Username:<br>
         <input type="text" name="first_name"><br>
 
         Password:<br>
-        <input name="pwd" type="text">
+        <input type="password" name="pwd" type="text">  <hr/>
+
+        <div class=" d-flex justify-content-center">
 
         <button class="btn btn-outline-success" id="btn" name="query" > OK </button>
-        <hr/>
+        </div>
 
 
     </form>
+    <hr/>
 
 
     <form align="center"name="cancel"  method="get" action="query.jsp">

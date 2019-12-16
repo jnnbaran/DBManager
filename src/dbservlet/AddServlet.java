@@ -29,7 +29,6 @@ public class AddServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        String user = request.getParameter("id");
         String userName = request.getParameter("first_name");
         String Password = request.getParameter("pwd");
 
@@ -42,8 +41,9 @@ public class AddServlet extends HttpServlet {
             Class.forName("com.mysql.jdbc.Driver");
 
             Statement stmt = DBManager.getConnection().createStatement();
-                stmt.executeUpdate("insert into Users values ('"+user+"','"+userName+"','"+3+"','"+Password+"')");
-                out.println("Registration completed successfully");
+            stmt.executeUpdate("insert into Users ( UserName, RoleID, Password)   values ('"+userName+"','"+3+"','"+Password+"')");
+
+            out.println("Registration completed successfully");
 
 
             stmt.close();

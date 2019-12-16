@@ -1,41 +1,40 @@
 package dbservlet;
 
 
-import java.beans.JavaBean;
-
-@JavaBean
 public class User {
 
     
-    private Integer id;
-    private String first_name;
-    private String last_name;
+    private int userId;
+    private String userName;
     private String password;
 
-    public User(Integer id, String first_name, String last_name, String password) {
-        this.id = id;
-        this.first_name = first_name;
-        this.last_name = last_name;
+
+    public User(int userId, String name, String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
+
+    public User(int userId, String userName, String password) {
+        this.userId = userId;
+        this.userName = userName;
         this.password = password;
     }
 
 
-    public Integer getId(){return id;}
-
-    public String getFirst_name() {
-        return first_name;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setFirst_name(String first_name) {
-        this.first_name = first_name;
+    public void setUserId(int id) {
+        this.userId = id;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setLast_name(String last_name) {
-        this.last_name = last_name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {
@@ -45,6 +44,4 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
-
 }

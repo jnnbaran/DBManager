@@ -28,10 +28,8 @@
 
 
     <form action="AddServlet" method="get">
-        Id:<br>
-        <input type="text" name="id"><br>
 
-
+        <hr/>
         Username:<br>
         <input type="text" name="first_name"><br>
 
@@ -42,9 +40,10 @@
         <input type="password" name="pwd" type="text"><br> <br>
 
 
+        <div class=" d-flex justify-content-center">
 
         <button class="btn btn-outline-success d-flex align-items-center" id="btn" name="query" value="add"> OK </button>
-
+        </div>
     </form>
 
     <hr/>
