@@ -2,28 +2,27 @@ package dbservlet;
 
 public class Category {
 
-    private int CategoryId;
-    private String Category;
+    private int categoryId;
+    private String category;
 
-    public Category(int CategoryId, String Category) {
-        super();
-        this.CategoryId = CategoryId;
-        this.Category = Category;
+    public Category(int categoryId, String category) {
+        this.categoryId = categoryId;
+        this.category = category;
     }
 
-    public int getId() {
-        return CategoryId;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setId(int CategoryId) {
-        this.CategoryId = CategoryId;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
-    public String getName() {
-        return Category;
+    public String getCategory() {
+        return category;
     }
 
-    public void setName(String name) {
-        this.Category = name;
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

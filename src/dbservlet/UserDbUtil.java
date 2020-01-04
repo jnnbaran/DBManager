@@ -1,18 +1,15 @@
 package dbservlet;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import javax.sql.DataSource;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.sql.DataSource;
 
 public class UserDbUtil {
     private DataSource dataSource;
 
     public UserDbUtil(DataSource theDataSource) {
+
         dataSource = theDataSource;
     }
 
@@ -42,7 +39,7 @@ public class UserDbUtil {
                 // retrieve data from result set row
                 int userId = myRs.getInt("UserId");
                 String userName = myRs.getString("UserName");
-                String roleId = myRs.getString("RoleId");
+                int roleId = myRs.getInt("RoleId");
                 String password = myRs.getString("Password");
 
                 // create new student object
@@ -80,6 +77,86 @@ public class UserDbUtil {
         }
     }
 
+
+    public void addUser(User theUser) throws Exception {
+
+        Connection myConn = null;
+        PreparedStatement myStmt = null;
+
+        try {
+            // get db connection
+            myConn = dataSource.getConnection();
+
+            // create sql for insert
+            String sql = "insert into Users "
+                    + "(userName, roleId, password) "
+                    + "values (?, ?, ?)";
+
+            myStmt = myConn.prepareStatement(sql);
+
+            // set the param values for the student
+            myStmt.setString(1, theUser.getUserName());
+            myStmt.setInt(2, theUser.getRoleId());
+            myStmt.setString(3, theUser.getPassword());
+
+            // execute sql insert
+            myStmt.execute();
+        }
+        finally {
+            // clean up JDBC objects
+            close(myConn, myStmt, null);
+        }
+    }
+
+    public User getUser(String theUserId) throws Exception {
+
+        User theUser = null;
+
+        Connection myConn = null;
+        PreparedStatement myStmt = null;
+        ResultSet myRs = null;
+        int userId;
+
+        try {
+            // convert student id to int
+            userId = Integer.parseInt(theUserId);
+
+            // get connection to database
+            myConn = dataSource.getConnection();
+
+            // create sql to get selected student
+            String sql = "select * from Users where UserId=?";
+
+            // create prepared statement
+            myStmt = myConn.prepareStatement(sql);
+
+            // set params
+            myStmt.setInt(1, userId);
+
+            // execute statement
+            myRs = myStmt.executeQuery();
+
+            // retrieve data from result set row
+            if (myRs.next()) {
+                String userName = myRs.getString("userName");
+                int roleId = Integer.parseInt(myRs.getString("roleId"));
+                String password = myRs.getString("password");
+
+                // use the studentId during construction
+                theUser = new User(userId, userName, roleId, password);
+            }
+            else {
+                throw new Exception("Could not find student id: " + userId);
+            }
+
+            return theUser;
+        }
+        finally {
+            // clean up JDBC objects
+            close(myConn, myStmt, myRs);
+        }
+    }
+
     public void deleteUser(String theUserId) throws Exception {
 
         Connection myConn = null;
@@ -90,7 +167,7 @@ public class UserDbUtil {
 
             myConn = dataSource.getConnection();
 
-            String sql = "delete from Users where id=?";
+            String sql = "delete from Users where UserId=?";
 
             myStmt = myConn.prepareStatement(sql);
 
@@ -104,8 +181,44 @@ public class UserDbUtil {
     }
 
 
+    public void updateUser(User theUser) throws SQLException {
+
+
+        Connection myConn = null;
+        PreparedStatement myStmt = null;
+
+        try {
+
+
+            // get db connection
+            myConn = dataSource.getConnection();
+
+            // create SQL update statement
+            String sql = "update Users "
+                    + "set userName=?, RoleId=?, Password=? "
+                    + "where UserId=?";
+
+            // prepare statement
+            myStmt = myConn.prepareStatement(sql);
+
+            // set params
+            myStmt.setString(1, theUser.getUserName());
+            myStmt.setInt(2, theUser.getRoleId());
+            myStmt.setString(3, theUser.getPassword());
+            myStmt.setInt(4, theUser.getUserId());
+
+            // execute SQL statement
+            myStmt.execute();
+        }
+        finally {
+            // clean up JDBC objects
+            close(myConn, myStmt, null);
+        }
+    }
+
 
 
 }
+
 
 

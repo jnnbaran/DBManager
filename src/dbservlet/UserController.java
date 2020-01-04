@@ -1,9 +1,5 @@
 package dbservlet;
 
-import java.io.IOException;
-import java.time.Year;
-import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.List;
 
 
 @WebServlet("/UserControllerServlet")
@@ -21,7 +19,7 @@ public class UserController extends HttpServlet {
 
     private UserDbUtil UserDbUtil;
 
-    @Resource(name="jdbc/web_student_tracker")
+    @Resource(name="jdbc/Knowledgebase")
     private DataSource dataSource;
 
     @Override
@@ -38,24 +36,111 @@ public class UserController extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        // list the students ... in mvc fashion
         try {
-            listUsers(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
+            // read the "command" parameter
+            String theCommand = request.getParameter("command");
+
+            // if the command is missing, then default to listing students
+            if (theCommand == null) {
+                theCommand = "LIST";
+            }
+
+            // route to the appropriate method
+            switch (theCommand) {
+
+                case "LIST":
+                    listUsers(request, response);
+                    break;
+
+                case "ADD":
+                    addUser(request, response);
+                    break;
+
+                case "LOAD":
+                    loadUser(request, response);
+                    break;
+
+                case "UPDATE":
+                    updateUser(request, response);
+                    break;
+
+                case "DELETE":
+                    deleteUser(request, response);
+                    break;
+
+                default:
+                    listUsers(request, response);
+            }
+
+        }
+        catch (Exception exc) {
+            throw new ServletException(exc);
         }
 
+
+    }
+
+    private void updateUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // read student info from form data
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        String userName = request.getParameter("userName");
+        int roleId = Integer.parseInt(request.getParameter("roleId"));
+        String password = request.getParameter("password");
+
+        // create a new student object
+        User theUser = new User(userId, userName, roleId, password);
+
+        // perform update on database
+        UserDbUtil.updateUser(theUser);
+
+        // send them back to the "list students" page
+        listUsers(request, response);
+    }
+
+    private void loadUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // read student id from form data
+        String theUserId = request.getParameter("userId");
+
+        // get student from database (db util)
+        User theUser = UserDbUtil.getUser(theUserId);
+
+        // place student in the request attribute
+        request.setAttribute("THE_USER", theUser);
+
+        // send to jsp page: update-student-form.jsp
+        RequestDispatcher dispatcher =
+                request.getRequestDispatcher("/update-user-form.jsp");
+        dispatcher.forward(request, response);
+    }
+
+
+    private void addUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // read student info from form data
+        String userName = request.getParameter("userName");
+        int roleId = Integer.parseInt(request.getParameter("roleId"));
+        String password = request.getParameter("password");
+
+        // create a new student object
+        User theUser = new User(userName, roleId, password);
+
+        // add the student to the database
+        UserDbUtil.addUser(theUser);
+
+        // send back to main page (the student list)
+        listUsers(request, response);
     }
 
     private void listUsers(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
         // get students from db util
-        List<User> students = UserDbUtil.getUsers();
+        List<User> users = UserDbUtil.getUsers();
 
         // add students to the request
-        request.setAttribute("USER_LIST", students);
+        request.setAttribute("USER_LIST", users);
 
         // send to JSP page (view)
         RequestDispatcher dispatcher = request.getRequestDispatcher("/list-users.jsp");
@@ -74,6 +159,8 @@ public class UserController extends HttpServlet {
         // send them back to "list students" page
         listUsers(request, response);
     }
+
+
 
 }
 
