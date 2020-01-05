@@ -1,4 +1,4 @@
-<h2> <strong> WEB Application JSP and SERVLET </strong> </h2>
+<h2> <strong> WEB Application using JSP and SERVLET </strong> </h2>
 
 The goal of the application is to keep track of the questions and answeres added by users.The application involves also the basic CRUD operations (only for certain users role e.g admin), and involves the MVC Design pattern.
 
