@@ -1,4 +1,9 @@
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.DriverManager" %>
+<%@ page import="java.sql.PreparedStatement" %>
+<%@ page import="java.sql.ResultSet" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jstl/sql" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
@@ -8,8 +13,9 @@
 <head>
     <title>KNOWLEDGEBASE APP</title>
 
- <!--  <link type="text/css" rel="stylesheet" href="css/style.css"> -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"><script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="css/style-question.css">
+
 
 </head>
 
@@ -33,29 +39,53 @@
     </li>
 </ul>
 
-<div class="jumbotron jumbotron-fluid">
+<div class="jumbotron background-color: rgb(43, 160, 255)"  >
+
+    <div class="header">
     <div class="container">
-        <h1 class="display-4">KNOWLEDGEBASE ADMIN SITE</h1>
-        <p class="lead" >......</p>
+            <h1 class="display-4"> FIND QUESTION </h1>
+            <p class="lead" ></p>
+        </div>
     </div>
-</div>
 
 
 <div class="d-flex flex-column justify-content-center align-items-center">
 
-    <div id="content">
+    <div id="content" class="d-flex flex-direction:row margin-right: 3px" >
 
-        <input type="button" value="Add user" onclick="window.location.href='add-user-form.jsp'; return false; " />
+        <p style=" margin-right: 1rem;"> Find by category:  </p>
+        <select class="form-control" style="width: 250px; margin-right: 1rem;" name="categoryId">
+            <c:forEach var="tempCategory" items="${CATEGORY_LIST}">
 
+                <c:url var="categoryLink" value="CategoryServlet">
+                    <c:param name="command" value="LIST" />
+                    <c:param name="categoryId" value="${tempCategory.categoryId}"/>
+                </c:url>
+
+                <option href="${categoryLink}" > ${tempCategory.category}</option>
+
+
+            </c:forEach>
+
+        </select>
+
+
+        <form action="QuestionController" >
+        <button name="command" value="selectedList"> SEARCH </button>
+        </form>
+    </div>
+
+    <hr/>
         <c:forEach var="tempQuestion" items="${QUESTION_LIST}">
 
+
         <div class="card"style="width: 60rem;" >
-           <h5 class="card-header"> ${tempQuestion.date} </h5>
+           <h5 class="card-header"> ${tempQuestion.date}, asked by: ${tempQuestion.user.userName} </h5>
             <div class="card-body">
-                <h5 class="card-title"><strong> ${tempQuestion.title} </strong>  <button class="far fa-trash-alt" style="width: 2rem;height: 2rem;" onclick="if (!(confirm('Are you sure you want to delete this question?'))) return false"></button></h5>
+                <h5 class="card-title"> ${tempQuestion.title}  <button class="far fa-trash-alt" style="width: 1rem;height: 1rem;" onclick="if (!(confirm('Are you sure you want to delete this question?'))) return false"></button></h5>
 
                 <p class="card-text"> ${tempQuestion.question} </p>
-                <a href="#" class="btn btn-primary">ANSWERS</a>
+                <button>ANSWERS</button>
             </div>
 
         </div>
@@ -65,8 +95,7 @@
 
     </div>
 
-!
-
+</div>
 </div>
 </body>
 </html>

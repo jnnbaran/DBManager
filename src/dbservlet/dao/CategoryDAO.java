@@ -1,4 +1,6 @@
-package dbservlet;
+package dbservlet.dao;
+
+import dbservlet.model.Category;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -8,18 +10,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryDbUtil {
+public class CategoryDAO {
 
 
     @Resource(name = "jdbc/Knowledgebase")
-    private DataSource dataSource;
+    private static DataSource dataSource;
 
-    public CategoryDbUtil(DataSource theDataSource) {
+    public CategoryDAO(DataSource theDataSource) {
 
         dataSource = theDataSource;
     }
 
-    public List<Category> getCategory() throws Exception {
+    public static List<Category> getCategory() throws Exception {
 
         List<Category> categories = new ArrayList<>();
 
@@ -62,7 +64,7 @@ public class CategoryDbUtil {
 
 }
 
-    private void close(Connection myConn, Statement myStmt, ResultSet myRs) {
+    private static void close(Connection myConn, Statement myStmt, ResultSet myRs) {
 
         try {
             if (myRs != null) {

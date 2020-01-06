@@ -1,4 +1,9 @@
-package dbservlet;
+package dbservlet.controller;
+
+import dbservlet.dao.CategoryDAO;
+import dbservlet.dao.QuestionDAO;
+import dbservlet.model.Category;
+import dbservlet.model.Question;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -23,14 +28,14 @@ public class QuestionController  extends HttpServlet {
     @Resource(name="jdbc/Knowledgebase")
     private DataSource dataSource;
 
-    private QuestionDbUtil QuestionDbUtil;
+    private QuestionDAO QuestionDAO;
 
     @Override
     public void init() throws ServletException {
         super.init();
 
         try {
-            QuestionDbUtil = new QuestionDbUtil(dataSource);
+            QuestionDAO = new QuestionDAO(dataSource);
         }
         catch (Exception exc) {
             throw new ServletException(exc);
@@ -56,8 +61,8 @@ public class QuestionController  extends HttpServlet {
                     addQuestion(request, response);
                     break;
 
-                case "LOAD":
-                    loadQuestion(request, response);
+                case "selectedList":
+                    listSelectedQuestion(request, response);
                     break;
 
                 case "UPDATE":
@@ -116,7 +121,7 @@ public class QuestionController  extends HttpServlet {
                 Question theQuestion = new Question(date, (Integer) userId, title, question, categoryIdd);
 
                 // add the question to the database
-                QuestionDbUtil.addQuestion(theQuestion);
+                QuestionDAO.addQuestion(theQuestion);
 
                 listQuestion(request, response);
             }
@@ -129,13 +134,32 @@ public class QuestionController  extends HttpServlet {
     private void listQuestion(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        List<Question> questions = QuestionDbUtil.getQuestion();
+
+        List<Question> questions = QuestionDAO.getQuestion();
+
 
         request.setAttribute("QUESTION_LIST", questions);
+
+        List<Category> categories = CategoryDAO.getCategory();
+
+        // add students to the request
+        request.setAttribute("CATEGORY_LIST", categories);
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/list-question.jsp");
         dispatcher.forward(request, response);
     }
+
+    private void listSelectedQuestion(HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        List<Question> questions = QuestionDAO.getSelectQuestions();
+
+
+        request.setAttribute("QUESTION_LIST", questions);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/list-question.jsp");
+        dispatcher.forward(request, response);
+    }
+
+
 
     private void updateQuestion(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
@@ -166,6 +190,8 @@ public class QuestionController  extends HttpServlet {
             e.printStackTrace();
         }return "error";
     }
+
+
 
 
 

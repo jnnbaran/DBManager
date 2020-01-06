@@ -1,4 +1,7 @@
-package dbservlet;
+package dbservlet.controller;
+
+import dbservlet.dao.UserDAO;
+import dbservlet.model.User;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -17,7 +20,7 @@ public class UserController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private UserDbUtil UserDbUtil;
+    private UserDAO UserDAO;
 
     @Resource(name="jdbc/Knowledgebase")
     private DataSource dataSource;
@@ -28,7 +31,7 @@ public class UserController extends HttpServlet {
 
         // create our student db util ... and pass in the conn pool / datasource
         try {
-            UserDbUtil = new UserDbUtil(dataSource);
+            UserDAO = new UserDAO(dataSource);
         }
         catch (Exception exc) {
             throw new ServletException(exc);
@@ -92,7 +95,7 @@ public class UserController extends HttpServlet {
         User theUser = new User(userId, userName, roleId, password);
 
         // perform update on database
-        UserDbUtil.updateUser(theUser);
+        UserDAO.updateUser(theUser);
 
         // send them back to the "list students" page
         listUsers(request, response);
@@ -104,7 +107,7 @@ public class UserController extends HttpServlet {
         String theUserId = request.getParameter("userId");
 
         // get student from database (db util)
-        User theUser = UserDbUtil.getUser(theUserId);
+        User theUser = UserDAO.getUser(theUserId);
 
         // place student in the request attribute
         request.setAttribute("THE_USER", theUser);
@@ -127,7 +130,7 @@ public class UserController extends HttpServlet {
         User theUser = new User(userName, roleId, password);
 
         // add the student to the database
-        UserDbUtil.addUser(theUser);
+        UserDAO.addUser(theUser);
 
         // send back to main page (the student list)
         listUsers(request, response);
@@ -137,7 +140,7 @@ public class UserController extends HttpServlet {
             throws Exception {
 
         // get students from db util
-        List<User> users = UserDbUtil.getUsers();
+        List<User> users = UserDAO.getUsers();
 
         // add students to the request
         request.setAttribute("USER_LIST", users);
@@ -154,7 +157,7 @@ public class UserController extends HttpServlet {
         String theUserId = request.getParameter("userId");
 
         // delete student from database
-        UserDbUtil.deleteUser(theUserId);
+        UserDAO.deleteUser(theUserId);
 
         // send them back to "list students" page
         listUsers(request, response);

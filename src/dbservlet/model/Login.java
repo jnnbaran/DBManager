@@ -1,4 +1,4 @@
-package dbservlet;
+package dbservlet.model;
 
 
 public class Login {
@@ -6,6 +6,8 @@ public class Login {
     private String userName;
     private String password;
     private int userId;
+    private int roleId;
+    private User user;
 
     public String getUserName() {
         return userName;
@@ -26,5 +28,22 @@ public class Login {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public int getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 }

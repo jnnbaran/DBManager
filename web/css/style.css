@@ -17,7 +17,7 @@ body {
 }
 
 h1 {
-	font-weight: bold;
+	text-align: center;
 	margin: 0;
 	color: #bbbbbb;
 }
@@ -60,6 +60,11 @@ button {
 
 button:active {
 	transform: scale(0.95);
+
+}
+button:hover{
+	background-color: #eeeeee;
+
 }
 
 button:focus {
@@ -69,7 +74,13 @@ button:focus {
 button.ghost {
 	background-color: transparent;
 	border-color: #FFFFFF;
+
 }
+button.ghost:hover {
+	background-color: #eeeeee;
+
+}
+
 
 form {
 	background-color: #FFFFFF;
@@ -88,6 +99,10 @@ input {
 	padding: 12px 15px;
 	margin: 8px 0;
 	width: 100%;
+}
+
+.jumbotron {
+	width: 45rem;
 }
 
 .container {
@@ -227,27 +242,3 @@ input {
 	width: 40px;
 }
 
-footer {
-	background-color: #222;
-	color: #fff;
-	font-size: 14px;
-	bottom: 0;
-	position: fixed;
-	left: 0;
-	right: 0;
-	text-align: center;
-	z-index: 999;
-}
-
-footer p {
-	margin: 10px 0;
-}
-
-footer i {
-	color: red;
-}
-
-footer a {
-	color: #3c97bf;
-	text-decoration: none;
-}

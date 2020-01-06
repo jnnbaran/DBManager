@@ -1,4 +1,4 @@
-package dbservlet;
+package dbservlet.model;
 
 public class Category {
 

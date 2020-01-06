@@ -36,32 +36,6 @@
     }
 %>
 
-
-  <!--  <form action="UsersLogin" method="post">
-        <hr/>
-        Username:<br>
-        <input type="text" name="userName"><br>
-
-        Password:<br>
-        <input type="password" name="password" type="text">  <hr/>
-
-        <div class=" d-flex justify-content-center">
-
-            <button class="btn btn-outline-success" id="btn" name="query" > OK </button>
-        </div>
-
-
-    </form>
-
-
-
-    <hr/>
-
-    dont have account? ->
-    <input type="button" class="btn btn-outline-success" value="REGISTER" onclick="window.location.href='add-user-form.jsp'; return false; " />
-
-    <hr/> -->
-
 <div class="container" id="container">
     <div class="form-container sign-up-container">
         <form action="UsersLogin" method="post">

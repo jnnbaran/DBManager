@@ -1,5 +1,8 @@
-package dbservlet;
+package dbservlet.controller;
 
+
+import dbservlet.dao.CategoryDAO;
+import dbservlet.model.Category;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -8,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +22,7 @@ public class CategoryServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private CategoryDbUtil CategoryDbUtil;
+    private CategoryDAO CategoryDAO;
 
     @Resource(name="jdbc/Knowledgebase")
     private DataSource dataSource;
@@ -29,7 +33,7 @@ public class CategoryServlet extends HttpServlet {
 
         // create our student db util ... and pass in the conn pool / datasource
         try {
-            CategoryDbUtil = new CategoryDbUtil(dataSource);
+            CategoryDAO = new CategoryDAO(dataSource);
         }
         catch (Exception exc) {
             throw new ServletException(exc);
@@ -62,15 +66,20 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void listCategory(HttpServletRequest request, HttpServletResponse response) throws Exception {
+            HttpSession session = request.getSession();
 
-            List<Category> categories = CategoryDbUtil.getCategory();
+            List<Category> categories = CategoryDAO.getCategory();
 
             // add students to the request
             request.setAttribute("CATEGORY_LIST", categories);
 
-            // send to JSP page (view)
+           int roleId = (int) session.getAttribute("roleId");
+
+           request.setAttribute("role", roleId);
+
             RequestDispatcher dispatcher = request.getRequestDispatcher("/main-page.jsp");
             dispatcher.forward(request, response);
+
 
 
     }

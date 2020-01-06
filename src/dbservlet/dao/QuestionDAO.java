@@ -1,4 +1,8 @@
-package dbservlet;
+package dbservlet.dao;
+
+import dbservlet.model.Category;
+import dbservlet.model.Question;
+import dbservlet.model.User;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -6,12 +10,59 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class QuestionDbUtil {
+public class QuestionDAO {
     private DataSource dataSource;
 
-    public QuestionDbUtil(DataSource theDataSource) {
+    public QuestionDAO(DataSource theDataSource) {
 
         dataSource = theDataSource;
+    }
+
+    public List<Question> getSelectQuestions() throws Exception, SQLException {
+
+        List<Question> selectQuestions = new ArrayList<>();
+        Connection myConn = null;
+        Statement myStmt = null;
+        ResultSet myRs = null;
+
+        try {
+            // get a connection
+            myConn = dataSource.getConnection();
+
+            String join = "select * from Questions join Users U on Questions.UserId = U.UserId WHERE Questions.CategoryId = 5";
+
+            myStmt = myConn.createStatement();
+
+            myRs = myStmt.executeQuery(join);
+
+
+            while (myRs.next()) {
+
+                // retrieve data from result set row
+                int QuestionId = myRs.getInt("QuestionId");
+                Date Date = myRs.getDate("Date");
+                int UserId = myRs.getInt("UserId");
+                String Title = myRs.getString("Title");
+                String Question = myRs.getString("Question");
+                int CategoryId = myRs.getInt("CategoryId");
+
+                int userId = myRs.getInt("UserId");
+                String userName = myRs.getString("UserName");
+                int roleId = myRs.getInt("RoleId");
+                String password = myRs.getString("Password");
+
+                User tempUser = new User(userId, userName, roleId, password);
+                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId,  Title, Question, CategoryId, tempUser);
+
+                selectQuestions.add(tempQuestion);
+            }
+
+            return selectQuestions;
+        }
+        finally {
+            // close JDBC objects
+            close(myConn, myStmt, myRs);
+        }
     }
 
 
@@ -29,10 +80,11 @@ public class QuestionDbUtil {
 
 
             String sql = "select * from Questions";
+            String join = "select * from Questions join Users U on Questions.UserId = U.UserId";
 
             myStmt = myConn.createStatement();
 
-            myRs = myStmt.executeQuery(sql);
+            myRs = myStmt.executeQuery(join);
 
             while (myRs.next()) {
 
@@ -44,8 +96,13 @@ public class QuestionDbUtil {
                 String Question = myRs.getString("Question");
                 int CategoryId = myRs.getInt("CategoryId");
 
+                int userId = myRs.getInt("UserId");
+                String userName = myRs.getString("UserName");
+                int roleId = myRs.getInt("RoleId");
+                String password = myRs.getString("Password");
 
-                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId,  Title, Question, CategoryId);
+                User tempUser = new User(userId, userName, roleId, password);
+                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId,  Title, Question, CategoryId, tempUser);
 
                 questions.add(tempQuestion);
             }
@@ -129,6 +186,9 @@ public class QuestionDbUtil {
             close(myConn, myStmt, myRs);
         }
     }
+
+
+
 
     public void addQuestion(Question theQuestion) throws SQLException {
 

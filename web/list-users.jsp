@@ -10,6 +10,7 @@
 
   <!--  <link type="text/css" rel="stylesheet" href="css/style.css"> -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"><script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="css/style-question.css">
 
 </head>
 
@@ -33,28 +34,27 @@
     </li>
 </ul>
 
-<div class="jumbotron jumbotron-fluid">
     <div class="container">
         <h1 class="display-4">KNOWLEDGEBASE ADMIN SITE</h1>
-        <p class="lead" >......</p>
     </div>
-</div>
+
 
 
 <div class="d-flex flex-column justify-content-center align-items-center">
 
     <div id="content">
 
-        <input type="button" value="Add user" onclick="window.location.href='add-user-form.jsp'; return false; " />
+        <input class="input-add" type="button" value="Add new user" align="center" onclick="window.location.href='add-user-form.jsp'; return false; " />
+        <button> SHOW EDITORS </button>
+        <hr/>
 
         <table class="table" style="width: 80rem;">
             <thead class="thead-dark">
 
             <tr>
-                <th scope="col">First Name</th>
+                <th scope="col" >First Name</th>
                 <th scope="col">Role Id</th>
-                <th scope="col">Password</th>
-                <th scope="col">Action</th>
+                <th scope="col" >Action</th>
             </tr>
 
             <c:forEach var="tempUser" items="${USER_LIST}">
@@ -73,7 +73,6 @@
             <tr>
                 <td> ${tempUser.userName} </td>
                 <td> ${tempUser.roleId} </td>
-                <td> ${tempUser.password} </td>
                 <td> <a href="${templink}"> Update </a>
                     |
                     <a href="${deleteLink}"

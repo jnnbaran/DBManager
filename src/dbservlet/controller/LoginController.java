@@ -1,4 +1,8 @@
-package dbservlet;
+package dbservlet.controller;
+
+import dbservlet.dao.LoginDAO;
+import dbservlet.model.Login;
+import dbservlet.model.User;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -19,7 +23,7 @@ public class LoginController extends HttpServlet{
     @Resource(name="jdbc/Knowledgebase")
     private DataSource dataSource;
 
-    private LoginDbUtil LoginDbUtil;
+    private LoginDAO LoginDAO;
 
     @Override
     public void init() throws ServletException {
@@ -27,7 +31,7 @@ public class LoginController extends HttpServlet{
 
         // create our student db util ... and pass in the conn pool / datasource
         try {
-            LoginDbUtil = new LoginDbUtil(dataSource);
+            LoginDAO = new LoginDAO(dataSource);
         }
         catch (Exception exc) {
             throw new ServletException(exc);
@@ -43,26 +47,26 @@ public class LoginController extends HttpServlet{
         login.setUserName(request.getParameter("userName"));
         login.setPassword(request.getParameter("password"));
 
-        String result=LoginDbUtil.loginCheck(login);
+        User tempUser = LoginDAO.loginCheck(login);
 
-        if(result != "false" && result != "error"){
+        if(tempUser != null){
 
-            int userId = Integer.parseInt(result);
-            login.setUserId(userId);
+
+            login.setUserId(tempUser.getUserId());
+            login.setRoleId(tempUser.getRoleId());
             session.setAttribute("userName",login.getUserName());
             session.setAttribute("userId",login.getUserId());
-
+            session.setAttribute("roleId", login.getRoleId());
             response.sendRedirect("CategoryServlet");
+
         }
 
-        if(result.equals("false")){
+        if(tempUser == null){
             request.setAttribute("result", false);
             response.sendRedirect("index.jsp?status=false");
-
-
         }
 
-        if(result.equals("error")){
+        if(tempUser.equals("error")){
             response.sendRedirect("index.jsp?status=error");
         }
 

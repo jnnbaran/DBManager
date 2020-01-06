@@ -1,14 +1,16 @@
-package dbservlet;
+package dbservlet.dao;
+
+import dbservlet.model.User;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDbUtil {
+public class UserDAO {
     private DataSource dataSource;
 
-    public UserDbUtil(DataSource theDataSource) {
+    public UserDAO(DataSource theDataSource) {
 
         dataSource = theDataSource;
     }

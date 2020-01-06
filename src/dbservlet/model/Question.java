@@ -1,4 +1,4 @@
-package dbservlet;
+package dbservlet.model;
 
 
 import java.util.Date;
@@ -11,6 +11,7 @@ public class Question {
     private String title;
     private String question;
     private int categoryId;
+    private User user;
 
 
     public Question(int questionId, java.sql.Date date, int userId, String title, String question, int categoryId) {
@@ -22,6 +23,15 @@ public class Question {
         this.categoryId = categoryId;
     }
 
+    public Question(int questionId, java.sql.Date date, int userId, String title, String question, int categoryId, User user) {
+        this.questionId = questionId;
+        this.date = date;
+        this.userId = userId;
+        this.title = title;
+        this.question = question;
+        this.categoryId = categoryId;
+        this.user = user;
+    }
 
     public Question(java.sql.Date date, int userId, String title, String question, int categoryId) {
         this.date = date;
@@ -78,6 +88,14 @@ public class Question {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
