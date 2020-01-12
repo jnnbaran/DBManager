@@ -69,7 +69,7 @@
             <textarea class="form-control"  rows="15" name="question" placeholder ="place to ask questions"></textarea>
 
             <hr/>
-
+            <img src="/home/joanna/Desktop/DBManager1/web/images/questionBoy.png" alt="Smiley face">
 
 
             <select class="form-control" style="width: 250px" name="categoryId">

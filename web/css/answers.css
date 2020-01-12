@@ -1,0 +1,73 @@
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
+
+body {
+    background: #e7e9ee;
+    font-family: "Source Sans Pro", sans-serif;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+p {
+    line-height: 1.6;
+}
+
+.comment-item {
+    position: relative;
+    background: white;
+}
+
+
+.is-right--inner {
+    margin-left: 5.6em;
+}
+small {
+    padding-left: 0.7em;
+    color: #999;
+    font-size: 0.7em;
+}
+
+.name {
+    color: #367588;
+    text-decoration: none;
+    font-size: 0.9em;
+    font-weight: 700;
+}
+
+.bar {
+    color: #999;
+    font-size: 1em;
+    position: relative;
+    top: -4px;
+    padding: 0em 0.5em;
+}
+
+svg {
+    cursor: pointer;
+    stroke: #999;
+    width: 17px;
+    height: 17px;
+}
+
+
+
+.close {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    font-size: 2em;
+    cursor: pointer;
+    color: #999;
+}
+
+.comment {
+    width: 50%;
+    height: 100px;
+    padding: 10px;
+    border-left: 6px solid grey;
+    background-color: white;
+    color: #095484;
+}

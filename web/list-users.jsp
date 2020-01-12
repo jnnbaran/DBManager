@@ -44,7 +44,7 @@
 
     <div id="content">
 
-        <input class="input-add" type="button" value="Add new user" align="center" onclick="window.location.href='add-user-form.jsp'; return false; " />
+        <input class="input-add" type="button" value="Add new user" align="center" onclick="window.location.href='add-user-form.java'; return false; " />
         <button> SHOW EDITORS </button>
         <hr/>
 

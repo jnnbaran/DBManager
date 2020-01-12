@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 
@@ -25,11 +26,12 @@ public class UserController extends HttpServlet {
     @Resource(name="jdbc/Knowledgebase")
     private DataSource dataSource;
 
+
     @Override
     public void init() throws ServletException {
         super.init();
 
-        // create our student db util ... and pass in the conn pool / datasource
+        // create user db util ... and pass in the conn pool / datasource
         try {
             UserDAO = new UserDAO(dataSource);
         }
@@ -40,15 +42,12 @@ public class UserController extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            // read the "command" parameter
             String theCommand = request.getParameter("command");
 
-            // if the command is missing, then default to listing students
             if (theCommand == null) {
                 theCommand = "LIST";
             }
 
-            // route to the appropriate method
             switch (theCommand) {
 
                 case "LIST":
@@ -70,6 +69,8 @@ public class UserController extends HttpServlet {
                 case "DELETE":
                     deleteUser(request, response);
                     break;
+                case "REG":
+                    registerUser(request,response);
 
                 default:
                     listUsers(request, response);
@@ -85,34 +86,29 @@ public class UserController extends HttpServlet {
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        // read student info from form data
         int userId = Integer.parseInt(request.getParameter("userId"));
         String userName = request.getParameter("userName");
         int roleId = Integer.parseInt(request.getParameter("roleId"));
         String password = request.getParameter("password");
 
-        // create a new student object
         User theUser = new User(userId, userName, roleId, password);
 
-        // perform update on database
         UserDAO.updateUser(theUser);
 
-        // send them back to the "list students" page
+        // send to the "list students" page
         listUsers(request, response);
     }
 
     private void loadUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        // read student id from form data
         String theUserId = request.getParameter("userId");
 
-        // get student from database (db util)
+        // get user from database (db util)
         User theUser = UserDAO.getUser(theUserId);
 
-        // place student in the request attribute
+        // place user in the request attribute
         request.setAttribute("THE_USER", theUser);
 
-        // send to jsp page: update-student-form.jsp
         RequestDispatcher dispatcher =
                 request.getRequestDispatcher("/update-user-form.jsp");
         dispatcher.forward(request, response);
@@ -121,28 +117,45 @@ public class UserController extends HttpServlet {
 
     private void addUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        // read student info from form data
         String userName = request.getParameter("userName");
         int roleId = Integer.parseInt(request.getParameter("roleId"));
         String password = request.getParameter("password");
 
-        // create a new student object
         User theUser = new User(userName, roleId, password);
 
-        // add the student to the database
         UserDAO.addUser(theUser);
 
         // send back to main page (the student list)
         listUsers(request, response);
     }
 
+
+    private void registerUser(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        PrintWriter out = response.getWriter(  );
+
+        String userName = request.getParameter("userName");
+
+        //you can register only as user with role no.3
+        int roleId = 3;
+        String password = request.getParameter("password");
+        User theUser = new User(userName, roleId, password);
+        UserDAO.addUser(theUser);
+
+        out.print("You are successfully registered...");
+        // dodać walidację, czy istnieje juz taki sam user
+        // dodać walidację trudności hasłą
+        //dodać okienko, rejestracja pomyślna, teraz możesz sie zalogować -> po kliknięciu powrót do strony logowania
+
+
+    }
+
     private void listUsers(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        // get students from db util
+        // get user from db util
         List<User> users = UserDAO.getUsers();
 
-        // add students to the request
+        // add user to the request
         request.setAttribute("USER_LIST", users);
 
         // send to JSP page (view)
@@ -153,10 +166,10 @@ public class UserController extends HttpServlet {
     private void deleteUser(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
 
-        // read student id from form data
+        // read user id from form data
         String theUserId = request.getParameter("userId");
 
-        // delete student from database
+        // delete user from database
         UserDAO.deleteUser(theUserId);
 
         // send them back to "list students" page

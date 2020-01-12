@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.nio.file.LinkOption;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -65,8 +66,8 @@ public class QuestionController  extends HttpServlet {
                     listSelectedQuestion(request, response);
                     break;
 
-                case "UPDATE":
-                    updateQuestion(request, response);
+                case "LOAD":
+                    loadQuestion(request, response);
                     break;
 
                 case "DELETE":
@@ -88,8 +89,6 @@ public class QuestionController  extends HttpServlet {
     private void deleteQuestion(HttpServletRequest request, HttpServletResponse response) {
     }
 
-    private void loadQuestion(HttpServletRequest request, HttpServletResponse response) {
-    }
 
     private void addQuestion(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
@@ -149,10 +148,29 @@ public class QuestionController  extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
+
+    private void loadQuestion(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String theQuestionId = request.getParameter("questionId");
+
+        // get user from database (db util)
+        Question theQuestion= QuestionDAO.getQuestion(theQuestionId);
+
+        // place user in the request attribute
+        request.setAttribute("THE_QUESTION", theQuestion);
+
+        RequestDispatcher dispatcher =
+                request.getRequestDispatcher("/answers.java");
+        dispatcher.forward(request, response);
+    }
+
     private void listSelectedQuestion(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         List<Question> questions = QuestionDAO.getSelectQuestions();
+        List<Category> categories = CategoryDAO.getCategory();
 
+        // add user to the request
+        request.setAttribute("CATEGORY_LIST", categories);
 
         request.setAttribute("QUESTION_LIST", questions);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/list-question.jsp");
@@ -172,18 +190,13 @@ public class QuestionController  extends HttpServlet {
         try {
             Connection myConn = dataSource.getConnection();
             String sql = "select * from Category where Category=? ";
-
             PreparedStatement myStmt = myConn.prepareStatement(sql);
-
             myStmt.setString(1, String.valueOf(category));
 
             ResultSet rs = myStmt.executeQuery();
 
             if (rs.next()) {
-
                 String categoryId = String.valueOf(rs.getInt("CategoryId"));
-
-
                 return categoryId;
             }
         } catch (SQLException e) {

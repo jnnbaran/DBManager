@@ -38,12 +38,12 @@
 
 <div class="container" id="container">
     <div class="form-container sign-up-container">
-        <form action="UsersLogin" method="post">
+        <form action="UserControllerServlet" method="get">
             <h1>Create Account</h1>
             <span>or use your USER NAME for registration</span>
             <input type="text" placeholder="userName" name="userName" />
             <input type="password" placeholder="password" name="password" />
-            <button>Sign Up</button>
+            <button name="command" value="REG">Sign Up</button>
         </form>
     </div>
     <div class="form-container sign-in-container">
@@ -75,6 +75,7 @@
 
 
 <script type = "text/javascript" src="./script/main.js"></script>
+
 
 </body>
 

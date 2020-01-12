@@ -63,11 +63,11 @@ public class LoginController extends HttpServlet{
 
         if(tempUser == null){
             request.setAttribute("result", false);
-            response.sendRedirect("index.jsp?status=false");
+            response.sendRedirect("index.java?status=false");
         }
 
         if(tempUser.equals("error")){
-            response.sendRedirect("index.jsp?status=error");
+            response.sendRedirect("index.java?status=error");
         }
 
     }

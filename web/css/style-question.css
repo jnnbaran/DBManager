@@ -71,6 +71,13 @@ select {
 
     margin-right: 3rem;
 }
+.jumbotron {
+    width: 60rem;
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    background-color: #e9ecef;
+    border-radius: .3rem;
+}
 .input-add {
     border-radius: 13px;
     border: 1px solid #ebe6e6;
@@ -92,12 +99,19 @@ select {
     flex: 1 1 auto;
     padding: 1.25rem;
     background-color: #f6f5f7;
+    text-align: initial;
+
 }
 .card-header {
     background-color: #f0edf2;
     height: 2rem;
     font-size: small;
     color: grey;
+    text-align: initial;
+}
+
+p.card-text{
+    text-align: initial;
 }
 
 .nav {
@@ -114,4 +128,8 @@ color: grey;
 .content {
 
     width: 60rem;
+}
+.card-title {
+    text-align: initial;
+    margin-bottom: .75rem;
 }
