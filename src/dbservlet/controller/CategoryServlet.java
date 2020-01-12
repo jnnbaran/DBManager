@@ -22,7 +22,7 @@ public class CategoryServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    private CategoryDAO CategoryDAO;
+    private CategoryDAO categoryDAO;
 
     @Resource(name="jdbc/Knowledgebase")
     private DataSource dataSource;
@@ -31,9 +31,8 @@ public class CategoryServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
 
-        // create our student db util ... and pass in the conn pool / datasource
         try {
-            CategoryDAO = new CategoryDAO(dataSource);
+            categoryDAO = new CategoryDAO(dataSource);
         }
         catch (Exception exc) {
             throw new ServletException(exc);
@@ -68,12 +67,10 @@ public class CategoryServlet extends HttpServlet {
     private void listCategory(HttpServletRequest request, HttpServletResponse response) throws Exception {
             HttpSession session = request.getSession();
 
-            List<Category> categories = CategoryDAO.getCategory();
+            List<Category> categories = categoryDAO.getCategory();
 
-            // add students to the request
             request.setAttribute("CATEGORY_LIST", categories);
-
-           int roleId = (int) session.getAttribute("roleId");
+            int roleId = (int) session.getAttribute("roleId");
 
            request.setAttribute("role", roleId);
 

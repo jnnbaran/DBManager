@@ -30,34 +30,23 @@ public class CategoryDAO {
         ResultSet myRs = null;
 
         try {
-            // get a connection
             myConn = dataSource.getConnection();
-
-            // create sql statement
             String sql = "select * from Category";
-
             myStmt = myConn.createStatement();
-
-            // execute query
             myRs = myStmt.executeQuery(sql);
 
-            // process result set
             while (myRs.next()) {
 
-                // retrieve data from result set row
                 int categoryId = myRs.getInt("CategoryId");
                 String category = myRs.getString("Category");
 
-                // create new student object
                 Category tempCategory = new Category(categoryId, category);
 
-                // add it to the list of students
                 categories.add(tempCategory);
             }
 
             return categories;
         } finally {
-            // close JDBC objects
             close(myConn, myStmt, myRs);
         }
 
@@ -76,7 +65,7 @@ public class CategoryDAO {
             }
 
             if (myConn != null) {
-                myConn.close();   // doesn't really close it ... just puts back in connection pool
+                myConn.close();
             }
         }
         catch (Exception exc) {

@@ -43,7 +43,7 @@
             <span>or use your USER NAME for registration</span>
             <input type="text" placeholder="userName" name="userName" />
             <input type="password" placeholder="password" name="password" />
-            <button>Sign Up</button>
+            <button name="command" value ="SignUp">Sign Up</button>
         </form>
     </div>
     <div class="form-container sign-in-container">
@@ -54,7 +54,7 @@
             <input type="text" placeholder="userName" name="userName" />
             <input type="password" placeholder="password" name="password" />
         <hr/>
-            <button>Sign In</button>
+            <button name="command" value = "SignIn">Sign In</button>
         </form>
     </div>
     <div class="overlay-container">

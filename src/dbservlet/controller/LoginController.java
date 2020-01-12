@@ -1,6 +1,7 @@
 package dbservlet.controller;
 
 import dbservlet.dao.LoginDAO;
+import dbservlet.dao.UserDAO;
 import dbservlet.model.Login;
 import dbservlet.model.User;
 
@@ -23,15 +24,18 @@ public class LoginController extends HttpServlet{
     @Resource(name="jdbc/Knowledgebase")
     private DataSource dataSource;
 
-    private LoginDAO LoginDAO;
+    private LoginDAO loginDAO;
+    private UserDAO userDAO;
+
+
 
     @Override
     public void init() throws ServletException {
         super.init();
 
-        // create our student db util ... and pass in the conn pool / datasource
         try {
-            LoginDAO = new LoginDAO(dataSource);
+            loginDAO = new LoginDAO(dataSource);
+            userDAO = new UserDAO(dataSource);
         }
         catch (Exception exc) {
             throw new ServletException(exc);
@@ -42,12 +46,50 @@ public class LoginController extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            String theCommand = request.getParameter("command");
+
+
+            switch (theCommand) {
+
+                case "SignIn":
+                    signIn(request, response);
+                    break;
+
+                case "SignUp":
+                    signUp(request, response);
+                    break;
+
+            }
+        }
+        catch (Exception exc) {
+            throw new ServletException(exc);
+        }
+
+    }
+
+    private void signUp(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String userName = request.getParameter("userName");
+        int roleId = 3;
+        String password = request.getParameter("password");
+
+        User theUser = new User(userName, roleId, password);
+
+        userDAO.addUser(theUser);
+
+        response.sendRedirect("index.jsp?status=regok");
+
+
+    }
+
+    private void signIn(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         Login login = new Login();
         login.setUserName(request.getParameter("userName"));
         login.setPassword(request.getParameter("password"));
 
-        User tempUser = LoginDAO.loginCheck(login);
+        User tempUser = loginDAO.loginCheck(login);
 
         if(tempUser != null){
 
@@ -69,6 +111,8 @@ public class LoginController extends HttpServlet{
         if(tempUser.equals("error")){
             response.sendRedirect("index.jsp?status=error");
         }
+
+
 
     }
 }

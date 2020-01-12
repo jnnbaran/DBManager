@@ -1,6 +1,5 @@
 package dbservlet.dao;
 
-import dbservlet.model.Category;
 import dbservlet.model.Question;
 import dbservlet.model.User;
 
@@ -18,22 +17,19 @@ public class QuestionDAO {
         dataSource = theDataSource;
     }
 
-    public List<Question> getSelectQuestions() throws Exception, SQLException {
+    public List<Question> getSelectQuestions(int categoryId) throws Exception, SQLException {
+
 
         List<Question> selectQuestions = new ArrayList<>();
-        Connection myConn = null;
-        Statement myStmt = null;
-        ResultSet myRs = null;
+        String join = "select * from Questions join Users U on Questions.UserId = U.UserId WHERE Questions.CategoryId = ?";
 
-        try {
+        try (
             // get a connection
-            myConn = dataSource.getConnection();
-
-            String join = "select * from Questions join Users U on Questions.UserId = U.UserId WHERE Questions.CategoryId = 5";
-
-            myStmt = myConn.createStatement();
-
-            myRs = myStmt.executeQuery(join);
+            Connection myConn = dataSource.getConnection();
+            PreparedStatement  myStmt = myConn.prepareStatement(join)
+            ) {
+            myStmt.setInt(1, categoryId);
+            ResultSet  myRs = myStmt.executeQuery();
 
 
             while (myRs.next()) {
@@ -59,14 +55,10 @@ public class QuestionDAO {
 
             return selectQuestions;
         }
-        finally {
-            // close JDBC objects
-            close(myConn, myStmt, myRs);
-        }
     }
 
 
-    public List<Question> getQuestion() throws Exception, SQLException {
+    public List<Question> getQuestion() throws Exception {
 
         List<Question> questions = new ArrayList<>();
 
@@ -110,7 +102,6 @@ public class QuestionDAO {
             return questions;
         }
         finally {
-            // close JDBC objects
             close(myConn, myStmt, myRs);
         }
     }
@@ -127,7 +118,7 @@ public class QuestionDAO {
             }
 
             if (myConn != null) {
-                myConn.close();   // doesn't really close it ... just puts back in connection pool
+                myConn.close();
             }
         }
         catch (Exception exc) {
@@ -146,25 +137,13 @@ public class QuestionDAO {
         int questionId;
 
         try {
-            // convert student id to int
             questionId = Integer.parseInt(theQuestionId);
-
-            // get connection to database
             myConn = dataSource.getConnection();
-
-            // create sql to get selected student
             String sql = "select * from Questions where QuestionId=?";
-
-            // create prepared statement
             myStmt = myConn.prepareStatement(sql);
-
-            // set params
             myStmt.setInt(1, questionId);
-
-            // execute statement
             myRs = myStmt.executeQuery();
 
-            // retrieve data from result set row
             if (myRs.next()) {
 
                 Date Date = myRs.getDate("Date");
@@ -182,7 +161,6 @@ public class QuestionDAO {
             return theQuestion;
         }
         finally {
-            // clean up JDBC objects
             close(myConn, myStmt, myRs);
         }
     }

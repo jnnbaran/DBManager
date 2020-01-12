@@ -52,6 +52,7 @@
 <div class="d-flex flex-column justify-content-center align-items-center">
 
     <div id="content" class="d-flex flex-direction:row margin-right: 3px" >
+        <form action="QuestionController" method="GET" >
 
         <p style=" margin-right: 1rem;"> Find by category:  </p>
         <select class="form-control" style="width: 250px; margin-right: 1rem;" name="categoryId">
@@ -70,9 +71,9 @@
         </select>
 
 
-        <form action="QuestionController" >
         <button name="command" value="selectedList"> SEARCH </button>
         </form>
+
     </div>
 
     <hr/>

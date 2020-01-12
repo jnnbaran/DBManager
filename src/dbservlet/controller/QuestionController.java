@@ -28,14 +28,17 @@ public class QuestionController  extends HttpServlet {
     @Resource(name="jdbc/Knowledgebase")
     private DataSource dataSource;
 
-    private QuestionDAO QuestionDAO;
+    private QuestionDAO questionDAO;
+    private CategoryDAO categoryDAO;
+
 
     @Override
     public void init() throws ServletException {
         super.init();
 
         try {
-            QuestionDAO = new QuestionDAO(dataSource);
+            questionDAO = new QuestionDAO(dataSource);
+            categoryDAO = new CategoryDAO(dataSource);
         }
         catch (Exception exc) {
             throw new ServletException(exc);
@@ -72,6 +75,9 @@ public class QuestionController  extends HttpServlet {
                 case "DELETE":
                     deleteQuestion(request, response);
                     break;
+                case "LIST_CATEGORY":
+                    listCategory(request, response);
+                    break;
 
                 default:
                     listQuestion(request, response);
@@ -82,6 +88,22 @@ public class QuestionController  extends HttpServlet {
             throw new ServletException(exc);
         }
 
+
+    }
+
+    private void listCategory(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+
+        List<Category> categories = categoryDAO.getCategory();
+
+        // add students to the request
+        request.setAttribute("CATEGORY_LIST", categories);
+        int roleId = (int) session.getAttribute("roleId");
+
+        request.setAttribute("role", roleId);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/main-page.jsp");
+        dispatcher.forward(request, response);
 
     }
 
@@ -121,7 +143,7 @@ public class QuestionController  extends HttpServlet {
                 Question theQuestion = new Question(date, (Integer) userId, title, question, categoryIdd);
 
                 // add the question to the database
-                QuestionDAO.addQuestion(theQuestion);
+                questionDAO.addQuestion(theQuestion);
 
                 listQuestion(request, response);
             }
@@ -135,12 +157,11 @@ public class QuestionController  extends HttpServlet {
             throws Exception {
 
 
-        List<Question> questions = QuestionDAO.getQuestion();
-
+        List<Question> questions = questionDAO.getQuestion();
 
         request.setAttribute("QUESTION_LIST", questions);
 
-        List<Category> categories = CategoryDAO.getCategory();
+        List<Category> categories = categoryDAO.getCategory();
 
         // add students to the request
         request.setAttribute("CATEGORY_LIST", categories);
@@ -151,12 +172,41 @@ public class QuestionController  extends HttpServlet {
 
     private void listSelectedQuestion(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        List<Question> questions = QuestionDAO.getSelectQuestions();
 
 
-        request.setAttribute("QUESTION_LIST", questions);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/list-question.jsp");
-        dispatcher.forward(request, response);
+
+        String categoryName = request.getParameter("categoryId");
+        try {
+            Connection myConn = dataSource.getConnection();
+            String sql = "select * from Category where Category=? ";
+
+            PreparedStatement myStmt = myConn.prepareStatement(sql);
+
+            myStmt.setString(1, String.valueOf(categoryName));
+
+            ResultSet rs = myStmt.executeQuery();
+
+            if (rs.next()) {
+
+                String categoryId = String.valueOf(rs.getInt("CategoryId"));
+                int categoryIdd = Integer.parseInt(categoryId);
+
+                List<Category> categories = categoryDAO.getCategory();
+                request.setAttribute("CATEGORY_LIST", categories);
+
+                List<Question> questions = questionDAO.getSelectQuestions(categoryIdd);
+                request.setAttribute("QUESTION_LIST", questions);
+                RequestDispatcher dispatcher = request.getRequestDispatcher("/list-question.jsp");
+                dispatcher.forward(request, response);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
 
