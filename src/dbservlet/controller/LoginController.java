@@ -70,6 +70,8 @@ public class LoginController extends HttpServlet{
 
     private void signUp(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+
+
         String userName = request.getParameter("userName");
         int roleId = 3;
         String password = request.getParameter("password");

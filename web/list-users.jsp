@@ -16,23 +16,8 @@
 
 <body>
 
-<ul class="nav justify-content-center">
-    <li class="nav-item">
-        <a class="nav-link" href="loginOK.jsp">Add quest</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" href="#">Your profile</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="allQuestion.jsp" >All questions</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Find question</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="login.jsp">Logout</a>
-    </li>
-</ul>
+<%@ include file="/navigation.jsp" %>
+
 
     <div class="container">
         <h1 class="display-4">KNOWLEDGEBASE ADMIN SITE</h1>

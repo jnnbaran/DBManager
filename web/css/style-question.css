@@ -71,6 +71,9 @@ select {
 
     margin-right: 3rem;
 }
+p {
+    text-align: initial;
+}
 .input-add {
     border-radius: 13px;
     border: 1px solid #ebe6e6;

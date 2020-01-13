@@ -21,23 +21,8 @@
 
 <body>
 
-<ul class="nav justify-content-center">
-    <li class="nav-item">
-        <a class="nav-link" href="loginOK.jsp">Add quest</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link active" href="#">Your profile</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="allQuestion.jsp" >All questions</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Find question</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="login.jsp">Logout</a>
-    </li>
-</ul>
+<%@ include file="/navigation.jsp" %>
+
 
 <div class="jumbotron background-color: rgb(43, 160, 255)"  >
 
@@ -78,7 +63,18 @@
 
     <hr/>
         <c:forEach var="tempQuestion" items="${QUESTION_LIST}">
+            <c:url var="answerseLinkk" value="QuestionController">
+                <c:param name="command" value="LOAD" />
+                <c:param name="userId" value="${tempUser.userId}"/>
+                <c:param name="questionId" value="${tempQuestion.questionId}"/>
+            </c:url>
 
+            <c:url var="answersLink" value="AnswerServlet">
+                <c:param name="command" value="LIST" />
+                <c:param name="userId" value="${tempUser.userId}"/>
+                <c:param name="questionId" value="${tempQuestion.questionId}"/>
+            </c:url>
+    <form action="AnswerServlet" method="get">
 
         <div class="card"style="width: 60rem;" >
            <h5 class="card-header"> ${tempQuestion.date}, asked by: ${tempQuestion.user.userName} </h5>
@@ -86,10 +82,10 @@
                 <h5 class="card-title"> ${tempQuestion.title}  <button class="far fa-trash-alt" style="width: 1rem;height: 1rem;" onclick="if (!(confirm('Are you sure you want to delete this question?'))) return false"></button></h5>
 
                 <p class="card-text"> ${tempQuestion.question} </p>
-                <button>ANSWERS</button>
-            </div>
+                <a href="${answersLink}" class="btn btn-secondary"> ANSWERS </a>            </div>
 
         </div>
+    </form>
             <hr/>
 
         </c:forEach>

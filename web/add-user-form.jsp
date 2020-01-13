@@ -7,19 +7,17 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <link type="text/css" rel="stylesheet" href="css/style.css">
-    <link type="text/css" rel="stylesheet" href="css/add-student-style.css">
 </head>
 
 <body>
 
 
-<div class="d-flex flex-column justify-content-center align-items-center h-100">
 
     <h1> hello, add new user here</h1>
     <hr/>
 
 
-    <form action="UserControllerServlet" method="GET">
+    <form action="UserControllerServlet" method="GET" style="height:50%">
 
         <input type="hidden" name="command" value="ADD" />
 

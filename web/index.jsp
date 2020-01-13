@@ -40,7 +40,7 @@
     <div class="form-container sign-up-container">
         <form action="UsersLogin" method="post">
             <h1>Create Account</h1>
-            <span>or use your USER NAME for registration</span>
+            <br>
             <input type="text" placeholder="userName" name="userName" />
             <input type="password" placeholder="password" name="password" />
             <button name="command" value ="SignUp">Sign Up</button>
@@ -61,12 +61,12 @@
         <div class="overlay">
             <div class="overlay-panel overlay-left">
                 <h1 style="color:white">Welcome Back!</h1>
-                <p style="color: #3a3535">To keep connected with us please login with your personal info</p>
+                <p style="color: #3a3535">To keep connected with us please login </p>
                 <button class="ghost" id="signIn">Sign In</button>
             </div>
             <div class="overlay-panel overlay-right">
                 <h1 style="color:white">Hello, Friend!</h1>
-                <p style="color: #3a3535">Enter your personal details and start journey with us</p>
+                <p style="color: #3a3535">Enter username and start journey with us</p>
                 <button class="ghost" id="signUp">Sign Up</button>
             </div>
         </div>

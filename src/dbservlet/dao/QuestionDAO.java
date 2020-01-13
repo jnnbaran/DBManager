@@ -145,14 +145,13 @@ public class QuestionDAO {
             myRs = myStmt.executeQuery();
 
             if (myRs.next()) {
-
                 Date Date = myRs.getDate("Date");
                 int UserId = myRs.getInt("UserId");
                 String Title = myRs.getString("Title");
                 String Question = myRs.getString("Question");
                 int CategoryId = myRs.getInt("CategoryId");
 
-                theQuestion = new Question((java.sql.Date) Date, UserId, Title, Question, CategoryId);
+                theQuestion = new Question(questionId, (java.sql.Date) Date, UserId, Title, Question, CategoryId);
             }
             else {
                 throw new Exception("Could not find qestion id: " + questionId);

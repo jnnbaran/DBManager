@@ -3,6 +3,7 @@
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.Statement" %>
 <%@ page import="java.sql.ResultSet" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -25,35 +26,8 @@
 
 <div class="d-flex flex-column justify-content-center align-items-center h-100 ">
 
+    <%@ include file="/navigation.jsp" %>
 
-    <ul class="nav justify-content-center">
-        <li class="nav-item">
-            <a class="nav-link" href="loginOK.jsp">Add quest</a>
-        </li>
-        <%
-           int userrole = (int) request.getAttribute("role");
-
-            if(userrole==1) {
-                out.println("  <li class=\"nav-item\">\n" +
-                        "            <a class=\"nav-link active\" href=\"UserControllerServlet\">Your profile</a>\n" +
-                        "              </li>");
-
-
-            }
-
-        %>
-
-
-        <li class="nav-item">
-            <a class="nav-link" href="QuestionController" >All questions</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">Find question</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="index.jsp">Logout</a>
-        </li>
-    </ul>
 
 
     <div class="jumbotron background-color: rgb(43, 160, 255)"  >
