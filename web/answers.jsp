@@ -54,24 +54,28 @@
 
         <hr/>
 
-            <div class="card"style="width: 60rem;" >
-                <h5 class="card-header"> ${THE_QUESTION.date} asked by:  </h5>
-                <div class="card-body">
-                    <h5 class="card-title"> ${THE_QUESTION.title}</h5>
-                    <p class="card-text"> ${THE_QUESTION.question} </p>
-                </div>
-
+        <div class="card"style="width: 60rem;" >
+            <h5 class="card-header"> ${THE_QUESTION.date} asked by:  </h5>
+            <div class="card-body">
+                <h5 class="card-title"> ${THE_QUESTION.title}</h5>
+                <p class="card-text"> ${THE_QUESTION.question} </p>
             </div>
-            <hr/>
+
+        </div>
+        <hr/>
     </div>
 
     <h3> ANSWERES </h3>
 
+    <c:forEach var="tempAnswer" items="${ANSWER_LIST}">
 
-        <h5 class="card-header" style="position: initial" > Kenny Krosky <small>1 month ago</small> </h5>
-        <div class="the--comment">
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique repellat quod nam perferendis tempore accusantium sunt ullam architecto, corrupti doloremque quia, quis inventore est vel magnam sit nesciunt provident. Quasi!</p>
-        </div>
+<form>
+
+
+    <h5 class="card-header" style="position: initial" > ${tempAnswer.user.userName} <small>1 month ago</small> </h5>
+    <div class="the--comment">
+        <p>${tempAnswer.answer}</p>
+    </div>
 
 
     <div class="ratings">
@@ -80,25 +84,13 @@
                                                                                            class="shareCount minus feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
 
-
-
-        <h5 class="card-header" style="position: initial" > Kenny Krosky <small>1 month ago</small> </h5>
-        <div class="the--comment">
-            <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Similique repellat quod nam perferendis tempore accusantium sunt ullam architecto, corrupti doloremque quia, quis inventore est vel magnam sit nesciunt provident. Quasi!</p>
-        </div>
-
-
-
-        <div class="ratings">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shareCount plus feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
-            <span class="share share-count share-plus">1</span> <span class="bar">|</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                                                               class="shareCount minus feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </div>
-<br />
-    <textarea class=comment rows="5" name="question" placeholder ="add comment"></textarea>
-<br/>
+</form>
+    </c:forEach>
+    <br />
+    <textarea class=comment rows="5" name="answer" placeholder ="add comment"></textarea>
+    <br/>
     <button class="btn btn-secondary"> POST YOUR ANSWER </button>
-
+    <!-- połączyć przycisk z dodawaniem odpowiedzi -->
 
 
 

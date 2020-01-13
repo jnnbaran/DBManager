@@ -39,7 +39,7 @@
     </li>
 </ul>
 
-<div class="jumbotron" style="background-color: #e9ecef; width:65rem"  >
+<div class="jumbotron background-color: rgb(43, 160, 255)"  >
 
     <div class="header">
     <div class="container">
@@ -52,6 +52,7 @@
 <div class="d-flex flex-column justify-content-center align-items-center">
 
     <div id="content" class="d-flex flex-direction:row margin-right: 3px" >
+        <form action="QuestionController" method="GET" >
 
         <p style=" margin-right: 1rem;"> Find by category:  </p>
         <select class="form-control" style="width: 250px; margin-right: 1rem;" name="categoryId">
@@ -70,36 +71,40 @@
         </select>
 
 
-        <form action="QuestionController" >
         <button name="command" value="selectedList"> SEARCH </button>
         </form>
+
     </div>
-</div>
+
 
     <hr/>
         <c:forEach var="tempQuestion" items="${QUESTION_LIST}">
 
-            <c:url var="answerseLink" value="QuestionController">
+            <c:url var="answerseLinkk" value="QuestionController">
                 <c:param name="command" value="LOAD" />
                 <c:param name="userId" value="${tempUser.userId}"/>
                 <c:param name="questionId" value="${tempQuestion.questionId}"/>
             </c:url>
 
+            <c:url var="answersLink" value="AnswerServlet">
+                <c:param name="command" value="LIST" />
+                <c:param name="userId" value="${tempUser.userId}"/>
+                <c:param name="questionId" value="${tempQuestion.questionId}"/>
+            </c:url>
 
-<form action="QuestionController">
+    <form action="AnswerServlet" method="get">
+
         <div class="card"style="width: 60rem;" >
-           <h5 class="card-header" style="text-align: initial"  name="cardheader"> ${tempQuestion.date}, asked by: ${tempQuestion.user.userName} </h5>
+           <h5 class="card-header"> ${tempQuestion.date}, asked by: ${tempQuestion.user.userName} </h5>
             <div class="card-body">
-                <h5 class="card-title"  style="text-align: initial" name=""> ${tempQuestion.title}  <button class="far fa-trash-alt" style="width: 1rem;height: 1rem;" onclick="if (!(confirm('Are you sure you want to delete this question?'))) return false"></button></h5>
+                <h5 class="card-title"> ${tempQuestion.title}  <button class="far fa-trash-alt" style="width: 1rem;height: 1rem;" onclick="if (!(confirm('Are you sure you want to delete this question?'))) return false"></button></h5>
 
-                <p class="card-text"  style="text-align: initial"> ${tempQuestion.question} </p>
-             <!-- button href="${answerseLink}>ANSWERS</button> -->
-
-                <a href="${answerseLink}" class="btn btn-secondary"> ANSWERS </a>
+                <p class="card-text"> ${tempQuestion.question} </p>
+                <a href="${answersLink}" class="btn btn-secondary"> ANSWERS </a>
             </div>
 
         </div>
-</form>
+    </form>
             <hr/>
 
         </c:forEach>
