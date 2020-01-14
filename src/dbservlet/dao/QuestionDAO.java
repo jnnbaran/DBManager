@@ -24,12 +24,12 @@ public class QuestionDAO {
         String join = "select * from Questions join Users U on Questions.UserId = U.UserId WHERE Questions.CategoryId = ?";
 
         try (
-            // get a connection
-            Connection myConn = dataSource.getConnection();
-            PreparedStatement  myStmt = myConn.prepareStatement(join)
-            ) {
+                // get a connection
+                Connection myConn = dataSource.getConnection();
+                PreparedStatement myStmt = myConn.prepareStatement(join)
+        ) {
             myStmt.setInt(1, categoryId);
-            ResultSet  myRs = myStmt.executeQuery();
+            ResultSet myRs = myStmt.executeQuery();
 
 
             while (myRs.next()) {
@@ -48,7 +48,7 @@ public class QuestionDAO {
                 String password = myRs.getString("Password");
 
                 User tempUser = new User(userId, userName, roleId, password);
-                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId,  Title, Question, CategoryId, tempUser);
+                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId, Title, Question, CategoryId, tempUser);
 
                 selectQuestions.add(tempQuestion);
             }
@@ -94,14 +94,13 @@ public class QuestionDAO {
                 String password = myRs.getString("Password");
 
                 User tempUser = new User(userId, userName, roleId, password);
-                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId,  Title, Question, CategoryId, tempUser);
+                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId, Title, Question, CategoryId, tempUser);
 
                 questions.add(tempQuestion);
             }
 
             return questions;
-        }
-        finally {
+        } finally {
             close(myConn, myStmt, myRs);
         }
     }
@@ -120,8 +119,7 @@ public class QuestionDAO {
             if (myConn != null) {
                 myConn.close();
             }
-        }
-        catch (Exception exc) {
+        } catch (Exception exc) {
             exc.printStackTrace();
         }
     }
@@ -152,19 +150,15 @@ public class QuestionDAO {
                 int CategoryId = myRs.getInt("CategoryId");
 
                 theQuestion = new Question(questionId, (java.sql.Date) Date, UserId, Title, Question, CategoryId);
-            }
-            else {
+            } else {
                 throw new Exception("Could not find qestion id: " + questionId);
             }
 
             return theQuestion;
-        }
-        finally {
+        } finally {
             close(myConn, myStmt, myRs);
         }
     }
-
-
 
 
     public void addQuestion(Question theQuestion) throws SQLException {
@@ -188,11 +182,60 @@ public class QuestionDAO {
             myStmt.setInt(5, theQuestion.getCategoryId());
 
             myStmt.execute();
-        }
-        finally {
+        } finally {
             close(myConn, myStmt, null);
         }
 
 
+    }
+
+    public List<Question> getQuestionForUser(int userId) {
+
+
+        List<Question> questions = new ArrayList<>();
+
+        Connection myConn = null;
+        PreparedStatement myStmt = null;
+        ResultSet myRs = null;
+
+        try {
+            myConn = dataSource.getConnection();
+
+            String join = "select * from Questions join Users U on Questions.UserId = U.UserId where Questions.UserId=?";
+            myStmt = myConn.prepareStatement(join);
+
+            myStmt.setInt(1, userId);
+
+
+            myRs = myStmt.executeQuery();
+
+            while (myRs.next()) {
+
+                // retrieve data from result set row
+                int QuestionId = myRs.getInt("QuestionId");
+                Date Date = myRs.getDate("Date");
+                int UserId = myRs.getInt("UserId");
+                String Title = myRs.getString("Title");
+                String Question = myRs.getString("Question");
+                int CategoryId = myRs.getInt("CategoryId");
+                String userName = myRs.getString("UserName");
+                int roleId = myRs.getInt("RoleId");
+                String password = myRs.getString("Password");
+
+                User tempUser = new User(userId, userName, roleId, password);
+                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId, Title, Question, CategoryId, tempUser);
+
+                questions.add(tempQuestion);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(myConn, myStmt, myRs);
+        }
+
+
+        return questions;
     }
 }

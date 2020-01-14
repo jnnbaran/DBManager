@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 
+
 @WebServlet("/UsersLogin")
 
 public class LoginController extends HttpServlet{
@@ -27,6 +28,8 @@ public class LoginController extends HttpServlet{
     private LoginDAO loginDAO;
     private UserDAO userDAO;
 
+    private PasswordValidator passwordValidator;
+
 
 
     @Override
@@ -36,6 +39,8 @@ public class LoginController extends HttpServlet{
         try {
             loginDAO = new LoginDAO(dataSource);
             userDAO = new UserDAO(dataSource);
+            passwordValidator = new PasswordValidator();
+
         }
         catch (Exception exc) {
             throw new ServletException(exc);
@@ -71,19 +76,24 @@ public class LoginController extends HttpServlet{
     private void signUp(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 
-
         String userName = request.getParameter("userName");
         int roleId = 3;
         String password = request.getParameter("password");
 
-        User theUser = new User(userName, roleId, password);
+       boolean result =  passwordValidator.validate(password);
+       if (result == true) {
+           User theUser = new User(userName, roleId, password);
 
-        userDAO.addUser(theUser);
+           userDAO.addUser(theUser);
 
-        response.sendRedirect("index.jsp?status=regok");
+           response.sendRedirect("index.jsp?status=regok");
+       } else {
+           response.sendRedirect("index.jsp?status=zbytslabehaslo");
 
-
+       }
     }
+
+
 
     private void signIn(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
@@ -113,8 +123,5 @@ public class LoginController extends HttpServlet{
         if(tempUser.equals("error")){
             response.sendRedirect("index.jsp?status=error");
         }
-
-
-
     }
 }

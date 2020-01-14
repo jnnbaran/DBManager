@@ -23,7 +23,7 @@
         <a class="nav-link" href="QuestionController" >All questions</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="#">Find question</a>
+        <a class="nav-link" href="UsersQuestionController" >My questions</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="index.jsp">Logout</a>
