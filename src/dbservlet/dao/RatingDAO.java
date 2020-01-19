@@ -14,7 +14,7 @@ public class RatingDAO {
 
     public int getRating(int answerId, boolean positive) throws SQLException {
         String sql = String.format(
-                "select count(*) as likes from Rating where AnswerId = %d and Rating = '%d'",
+                "select count(*) as likes from Rating where AnswerId = %d and Rating = '%b'",
                 answerId,
                 positive
         );
@@ -36,7 +36,7 @@ public class RatingDAO {
     public void updateUserRating(int answerId, int userId, boolean rating) throws SQLException {
         String sql;
 
-        if(getUserRating(answerId, userId) != null ) {
+        if(getUserRating(answerId, userId) == null ) {
             sql = "insert into Rating (Rating, AnswerId, UserId) values (?, ?, ?)";
         } else {
             sql = "update Rating set Rating = ? where AnswerId = ? and UserId = ?";
