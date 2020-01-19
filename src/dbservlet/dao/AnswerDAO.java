@@ -29,11 +29,11 @@ public class AnswerDAO {
             myStmt.setInt(1, questionId);
             ResultSet myRs = myStmt.executeQuery();
             while (myRs.next()) {
+                int answerId = myRs.getInt("AnswerId");
                 int QuestionId = myRs.getInt("QuestionId");
-                Date Date = myRs.getDate("Date");
+                Date date = myRs.getDate("Date");
                 String Title = myRs.getString("Title");
                 String Question = myRs.getString("Question");
-                int Rating = myRs.getInt("Rating");
                 String Answer = myRs.getString("Answer");
 
                 int CategoryId = myRs.getInt("CategoryId");
@@ -42,7 +42,7 @@ public class AnswerDAO {
                 int roleId = myRs.getInt("RoleId");
                 String password = myRs.getString("Password");
                 User tempUser = new User(userId, userName, roleId, password);
-                Answer tempAnswer = new Answer((java.sql.Date) Date, Rating, Answer, QuestionId, userId, tempUser);
+                Answer tempAnswer = new Answer(answerId, date, Answer, QuestionId, userId, tempUser);
                 //TU SKOŃCZYŁAM, POZOSTAŁO - POZAMIENIAC ZMIENNE, UPORZĄDKOWAĆ, PRZETESTOWAĆ WYŚWIETLANIE
                 answers.add(tempAnswer);
             }

@@ -3,9 +3,11 @@ package dbservlet.controller;
 import dbservlet.dao.AnswerDAO;
 import dbservlet.dao.CategoryDAO;
 import dbservlet.dao.QuestionDAO;
+import dbservlet.dao.RatingDAO;
 import dbservlet.model.Answer;
 import dbservlet.model.Category;
 import dbservlet.model.Question;
+import org.w3c.dom.ls.LSOutput;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -20,6 +22,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -31,6 +34,7 @@ public class AnswerController extends HttpServlet {
     private DataSource dataSource;
     private AnswerDAO answerDAO;
     private QuestionDAO questionDAO;
+    private RatingDAO ratingDAO;
 
 
     @Override
@@ -39,6 +43,7 @@ public class AnswerController extends HttpServlet {
         try {
             answerDAO = new AnswerDAO(dataSource);
             questionDAO = new QuestionDAO(dataSource);
+            ratingDAO = new RatingDAO(dataSource);
         }
         catch (Exception exc) {
             throw new ServletException(exc);
@@ -81,12 +86,11 @@ public class AnswerController extends HttpServlet {
 
         Object userId = session.getAttribute("userId");
         String answer = request.getParameter("answer");
-        int rating = 0;
 
         java.util.Date datee = new java.util.Date();//date object
         java.sql.Date date = new java.sql.Date(datee.getTime());
 
-        Answer theAnswer = new Answer(date, rating, answer, questionId, userId);
+        Answer theAnswer = new Answer(date, answer, questionId, userId);
         answerDAO.addAnswer(theAnswer);
         listAnswer(request, response);
 
@@ -99,8 +103,21 @@ public class AnswerController extends HttpServlet {
         int questionIdd = Integer.parseInt(theQuestionId);
 
         List<Answer> answers = answerDAO.getAnswer(questionIdd);
+        fetchRatingForAnswers(answers, (int)request.getSession().getAttribute("userId"));
         request.setAttribute("ANSWER_LIST", answers);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/answers.jsp");
         dispatcher.forward(request, response);
+    }
+
+    private void fetchRatingForAnswers(List<Answer> answers, int currentUserId) throws SQLException {
+        for (Answer answer: answers) {
+            answer.setRating(ratingDAO.getRating(answer.getAnswerId(), true));
+            answer.setNegativeRating(ratingDAO.getRating(answer.getAnswerId(), false));
+            answer.setActiveUserRating(ratingDAO.getUserRating(answer.getAnswerId(), currentUserId));
+        }
+    }
+
+    private void updateRating(Answer answer, int currentUserId, boolean rating) throws SQLException {
+        ratingDAO.updateUserRating(answer.getAnswerId(), currentUserId, rating);
     }
 }

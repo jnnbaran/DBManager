@@ -7,34 +7,35 @@ public class Answer {
     private int answerId;
     private Date date;
     private int rating;
+    private int negativeRating;
+    private Boolean activeUserRating;
     private String Answer;
     private int questionId;
     private int userId;
     private User user;
 
-    public Answer(Date date, int rating, String answer, int questionId, Object userId) {
+    public Answer(Date date, String answer, int questionId, Object userId) {
         this.date = date;
-        this.rating = rating;
         Answer = answer;
         this.questionId = questionId;
         this.userId = (int) userId;
     }
 
-    public Answer(Date date, int rating, String answer, int questionId, int userId, User user) {
+    public Answer(Date date, String answer, int questionId, int userId, User user) {
         this.date = date;
-        this.rating = rating;
         Answer = answer;
         this.questionId = questionId;
         this.userId = userId;
         this.user = user;
     }
-    public Answer(int answerId, Date date, int rating, String answer, int questionId, int userId) {
+
+    public Answer(int answerId, Date date, String answer, int questionId, int userId, User user) {
         this.answerId = answerId;
         this.date = date;
-        this.rating = rating;
         Answer = answer;
         this.questionId = questionId;
         this.userId = userId;
+        this.user = user;
     }
 
     public int getAnswerId() {
@@ -91,5 +92,21 @@ public class Answer {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getNegativeRating() {
+        return negativeRating;
+    }
+
+    public void setNegativeRating(int negativeRating) {
+        this.negativeRating = negativeRating;
+    }
+
+    public Boolean getActiveUserRating() {
+        return activeUserRating;
+    }
+
+    public void setActiveUserRating(Boolean activeUserRating) {
+        this.activeUserRating = activeUserRating;
     }
 }
