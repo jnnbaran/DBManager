@@ -14,7 +14,7 @@ public class RatingDAO {
 
     public int getRating(int answerId, boolean positive) throws SQLException {
         String sql = String.format(
-                "select count(*) as likes from Rating where AnswerId = %d and Rating = '%b'",
+                "select count(*) as likes from Rating where AnswerId = %d and Rating = %b",
                 answerId,
                 positive
         );
