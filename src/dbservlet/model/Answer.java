@@ -1,6 +1,7 @@
 package dbservlet.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class Answer {
 
@@ -13,6 +14,7 @@ public class Answer {
     private int questionId;
     private int userId;
     private User user;
+    private List<Comment> comments;
 
     public Answer(Date date, String answer, int questionId, Object userId) {
         this.date = date;
@@ -108,5 +110,13 @@ public class Answer {
 
     public void setActiveUserRating(Boolean activeUserRating) {
         this.activeUserRating = activeUserRating;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

@@ -35,7 +35,6 @@ public class AnswerDAO {
                 String Title = myRs.getString("Title");
                 String Question = myRs.getString("Question");
                 String Answer = myRs.getString("Answer");
-
                 int CategoryId = myRs.getInt("CategoryId");
                 int userId = myRs.getInt("UserId");
                 String userName = myRs.getString("UserName");
@@ -58,14 +57,13 @@ public class AnswerDAO {
         try  {
             myConn = dataSource.getConnection();
             String sql = "insert into Answers "
-                    + "(Date , Rating, Answer, QuestionID, UserId) "
-                    + "values (?, ?, ?, ?, ?)";
+                    + "(Date, Answer, QuestionID, UserId) "
+                    + "values (?, ?, ?, ?)";
             myStmt = myConn.prepareStatement(sql);
             myStmt.setDate(1, (java.sql.Date) theAnswer.getDate());
-            myStmt.setInt(2, theAnswer.getRating());
-            myStmt.setString(3, theAnswer.getAnswer());
-            myStmt.setInt(4, theAnswer.getQuestionId());
-            myStmt.setInt(5, theAnswer.getUserId());
+            myStmt.setString(2, theAnswer.getAnswer());
+            myStmt.setInt(3, theAnswer.getQuestionId());
+            myStmt.setInt(4, theAnswer.getUserId());
 
             myStmt.execute();
         } catch (SQLException e) {

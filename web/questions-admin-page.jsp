@@ -12,18 +12,14 @@
 <html>
 <head>
     <title>KNOWLEDGEBASE APP</title>
-    <link href='https://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:700' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Sancreek' rel='stylesheet' type='text/css'>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"><script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <link type="text/css" rel="stylesheet" href="css/style-question.css">
 
-    <script defer src="./script/edit-quest.js"></script>
 
 </head>
 
 <body>
-<button data-modal-target="#modal">Open Modal</button>
 
 <%@ include file="/navigation.jsp" %>
 
@@ -32,7 +28,7 @@
 
     <div class="header">
         <div class="container">
-            <h1 class="display-4"> YOUR QUESTION </h1>
+            <h1 class="display-4"> FIND QUESTION </h1>
             <p class="lead" ></p>
         </div>
     </div>
@@ -40,11 +36,41 @@
 
     <div class="d-flex flex-column justify-content-center align-items-center">
 
+        <div id="content" class="d-flex flex-direction:row margin-right: 3px" >
+            <form action="QuestionController" method="GET" >
+
+                <p style=" margin-right: 1rem;"> Find by category:  </p>
+                <select class="form-control" style="width: 250px; margin-right: 1rem;" name="categoryId">
+                    <c:forEach var="tempCategory" items="${CATEGORY_LIST}">
+
+                        <c:url var="categoryLink" value="CategoryServlet">
+                            <c:param name="command" value="LIST" />
+                            <c:param name="categoryId" value="${tempCategory.categoryId}"/>
+                        </c:url>
+
+                        <option href="${categoryLink}" > ${tempCategory.category}</option>
+
+
+                    </c:forEach>
+
+                </select>
+
+
+                <button name="command" value="selectedList"> SEARCH </button>
+            </form>
+
+        </div>
+
         <hr/>
         <c:forEach var="tempQuestion" items="${QUESTION_LIST}">
-            <c:url var="answerseLinkk" value="UsersQuestionController">
+            <c:url var="answerseLinkk" value="QuestionController">
                 <c:param name="command" value="LOAD" />
                 <c:param name="userId" value="${tempUser.userId}"/>
+                <c:param name="questionId" value="${tempQuestion.questionId}"/>
+            </c:url>
+
+            <c:url var="deleteLink" value="QuestionController">
+                <c:param name="command" value="DELETE" />
                 <c:param name="questionId" value="${tempQuestion.questionId}"/>
             </c:url>
 
@@ -61,13 +87,22 @@
                         <h5 class="card-title"> ${tempQuestion.title}  <button class="far fa-trash-alt" style="width: 1rem;height: 1rem;" onclick="if (!(confirm('Are you sure you want to delete this question?'))) return false"></button></h5>
 
                         <p class="card-text"> ${tempQuestion.question} </p>
+                        <a href="${answersLink}" class="btn btn-secondary"> ANSWERS </a>            </div>
 
-                        <a href="${answersLink}" class="btn btn-secondary"> ANSWERS </a>
 
 
-                    </div>
                 </div>
             </form>
+
+
+
+            <form action="QuestionController" method="get">
+                <a href="${deleteLink}" class="btn btn-secondary"> DELETE THIS QUESTION </a>
+
+    </form>
+
+
+
 
 
 
@@ -79,18 +114,5 @@
 
 </div>
 </div>
-
-<a class="trigger_popup_fricc">Click here to show the popup</a>
-
-<div class="hover_bkgr_fricc">
-    <span class="helper"></span>
-    <div>
-        <div class="popupCloseButton">&times;</div>
-        <p>Add any HTML content<br />inside the popup box!</p>
-    </div>
-</div>
-
-
-<script type = "text/javascript" src="./script/edit-quest.js"></script>
 </body>
 </html>

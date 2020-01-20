@@ -15,6 +15,11 @@ public class User {
         this.roleId = roleId;
         this.password = password;
     }
+    public User(int userId, String userName) {
+        this.userId = userId;
+        this.userName = userName;
+
+    }
 
     public User(int userId,String userName, int roleId,  String password) {
         this.userId = userId;

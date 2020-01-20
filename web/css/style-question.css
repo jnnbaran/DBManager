@@ -1,6 +1,9 @@
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
+
+
+
 * {
     box-sizing: border-box;
 }
@@ -117,4 +120,9 @@ color: grey;
 .content {
 
     width: 60rem;
+}
+
+.voteButton {
+    height: 24px;
+    width: 24px;
 }

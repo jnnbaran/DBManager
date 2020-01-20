@@ -4,6 +4,7 @@ import dbservlet.dao.CategoryDAO;
 import dbservlet.dao.QuestionDAO;
 import dbservlet.model.Category;
 import dbservlet.model.Question;
+import dbservlet.model.User;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -78,7 +79,9 @@ public class QuestionController  extends HttpServlet {
                 case "LIST_CATEGORY":
                     listCategory(request, response);
                     break;
-
+                case "ACCEPT":
+                     acceptQuestion(request, response);
+                    break;
                 default:
                     listQuestion(request, response);
             }
@@ -89,6 +92,15 @@ public class QuestionController  extends HttpServlet {
         }
 
 
+    }
+
+    private void acceptQuestion(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        int questionId = Integer.parseInt(request.getParameter("questionId"));
+
+        questionDAO.acceptQuestion(questionId);
+
+        listQuestion(request, response);
     }
 
     private void listCategory(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -107,7 +119,15 @@ public class QuestionController  extends HttpServlet {
 
     }
 
-    private void deleteQuestion(HttpServletRequest request, HttpServletResponse response) {
+    private void deleteQuestion(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        String theQuestionId = request.getParameter("questionId");
+        questionDAO.deleteQuestion(theQuestionId);
+        listQuestion(request, response);
+
+
+
+
     }
 
     private void loadQuestion(HttpServletRequest request, HttpServletResponse response) {
@@ -138,9 +158,11 @@ public class QuestionController  extends HttpServlet {
 
                 java.util.Date datee = new java.util.Date();//date object
                 java.sql.Date date = new java.sql.Date(datee.getTime());
+                boolean accepted = false;
+
                 //  int categoryId = 2;
 
-                Question theQuestion = new Question(date, (Integer) userId, title, question, categoryIdd);
+                Question theQuestion = new Question(date, (Integer) userId, title, question, categoryIdd, accepted);
 
                 // add the question to the database
                 questionDAO.addQuestion(theQuestion);
@@ -155,9 +177,10 @@ public class QuestionController  extends HttpServlet {
     }
     private void listQuestion(HttpServletRequest request, HttpServletResponse response)
             throws Exception {
+        HttpSession sessionn = request.getSession();
+        int roleId = (int) sessionn.getAttribute("roleId");
 
-
-        List<Question> questions = questionDAO.getQuestion();
+        List<Question> questions = questionDAO.getQuestion(roleId);
 
         request.setAttribute("QUESTION_LIST", questions);
 
@@ -165,9 +188,19 @@ public class QuestionController  extends HttpServlet {
 
         // add students to the request
         request.setAttribute("CATEGORY_LIST", categories);
+        if(roleId==1) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/questions-admin-page.jsp");
+            dispatcher.forward(request, response);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/list-question.jsp");
-        dispatcher.forward(request, response);
+        }else if (roleId==2) {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/moderator-site.jsp");
+            dispatcher.forward(request, response);
+
+        } else {
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/list-question.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     private void listSelectedQuestion(HttpServletRequest request, HttpServletResponse response)

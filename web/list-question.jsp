@@ -69,6 +69,11 @@
                 <c:param name="questionId" value="${tempQuestion.questionId}"/>
             </c:url>
 
+            <c:url var="deleteLink" value="QuestionController">
+                <c:param name="command" value="DELETE" />
+                <c:param name="questionId" value="${tempQuestion.questionId}"/>
+            </c:url>
+
             <c:url var="answersLink" value="AnswerServlet">
                 <c:param name="command" value="LIST" />
                 <c:param name="userId" value="${tempUser.userId}"/>
@@ -84,8 +89,33 @@
                 <p class="card-text"> ${tempQuestion.question} </p>
                 <a href="${answersLink}" class="btn btn-secondary"> ANSWERS </a>            </div>
 
+
+
         </div>
     </form>
+
+
+
+            <form href="${deleteLink}">
+                <%
+                    HttpSession session2 = request.getSession();
+
+                    int roleIdd = (int) session2.getAttribute("roleId");
+
+                    if(roleIdd==1) {
+                        out.println(" <button action=\"QuestionController\" method=\"get\" name=\"command\" value=\"DELETE\">delete</button>\n");
+
+
+                    }
+
+                %>
+            </form>
+
+
+
+
+
+
             <hr/>
 
         </c:forEach>

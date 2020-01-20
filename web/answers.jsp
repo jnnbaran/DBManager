@@ -51,34 +51,73 @@
             </div>
 
         </div>
+        </form>
         <hr/>
 <br>
     <h3> ANSWERS </h3>
 
     <c:forEach var="tempAnswer" items="${ANSWER_LIST}">
+        <c:url var="upvote" value="AnswerServlet">
+            <c:param name="command" value="updateRating" />
+            <c:param name="userId" value="${tempAnswer.userId}"/>
+            <c:param name="answerId" value="${tempAnswer.answerId}"/>
+            <c:param name="questionId" value="${tempAnswer.questionId}"/>
+            <c:param name="vote" value="upvote"/>
 
-        <div style="background-color: #f6f5f7; width: 60rem;" >
-            <h5 class="card-header" style="position: initial" > ${tempAnswer.user.userName} <small>1 month ago</small> </h5>
-            <div class="the--comment">
+        </c:url>
+        <c:url var="downvote" value="AnswerServlet">
+            <c:param name="command" value="updateRating" />
+            <c:param name="userId" value="${tempAnswer.userId}"/>
+            <c:param name="answerId" value="${tempAnswer.answerId}"/>
+            <c:param name="questionId" value="${tempAnswer.questionId}"/>
+            <c:param name="vote" value="downvote"/>
+        </c:url>
+        <c:url var="newComment" value="AnswerServlet">
+            <c:param name="command" value="addComment" />
+            <c:param name="answerId" value="${tempAnswer.answerId}"/>
+        </c:url>
+    <form action="AnswerServlet" method="get" style="display: flex; flex-direction: row;">
+
+        <div style="display: flex; flex-direction: column; padding: 1rem;">
+            <a href="${upvote}" class="btn btn-secondary"style="background-color: seagreen" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"> <path d="M12 0l8 9h-6v15h-4v-15h-6z"/></svg>
+            </a>
+            <span class="share share-count share-plus">${tempAnswer.rating}</span>
+            <a href="${downvote}" class="btn btn-secondary"style="background-color: indianred"  name="vote" value="downvote">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 24l-8-9h6v-15h4v15h6z"/></svg>
+            </a>
+        </div>
+
+        <div style="background-color: #f6f5f7; width: 60rem" >
+            <h5 class="card-header" style="position: initial" > ${tempAnswer.user.userName}  </h5>
+
+            <div class="the--comment" style="float:left; flex-direction: row">
                 <p style="text-align: initial">${tempAnswer.answer}</p>
             </div>
+        </div>
 
+    </form>
 
-            <div class="ratings">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shareCount plus feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                <span class="share share-count share-plus">0</span>
+        <form style=" display: flex; align-items: end; justify-content: end;" action="AnswerServlet" method="get">
+
+            <div class = "comments"  >
+                    <p style="text-align: initial; font-size: small ">${tempAnswer.comments}</p>
+
+                <hr/><hr/>
             </div>
-            <div class = "comments">
-                <p style="text-align: initial; font-size: small "> random comments</p>
-            <hr/>
-                <p style="text-align: initial; font-size: small "> random comments 3 </p>
-            <hr/>
-                <textarea style="width: 60rem; color: #bbbbbb"  rows="1"  name="comment" placeholder ="add a comment" ></textarea>
+            <div style="display: flex; flex-direction: row; justify-content: flex-end">
+                    <textarea style="width: 40rem; color: #bbbbbb"  rows="1"  name="comment" placeholder ="add a comment" ></textarea>
+                <input hidden name="answerId" value="${tempAnswer.answerId}">
+                    <button name="command" value="addComment"> ADD </button>
             </div>
 
-    </div>
-        <hr/>
+
+            <hr/>
+        </form>
     </c:forEach>
+
+
+
     <br />
     <textarea style="width: 60rem"  rows="5"  name="answer" placeholder ="your answer"></textarea>
     <br/>

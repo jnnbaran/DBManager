@@ -46,9 +46,11 @@ public class QuestionDAO {
                 String userName = myRs.getString("UserName");
                 int roleId = myRs.getInt("RoleId");
                 String password = myRs.getString("Password");
+                boolean accepted = myRs.getBoolean("Accepted");
+
 
                 User tempUser = new User(userId, userName, roleId, password);
-                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId, Title, Question, CategoryId, tempUser);
+                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId, Title, Question, CategoryId, tempUser, accepted);
 
                 selectQuestions.add(tempQuestion);
             }
@@ -58,7 +60,7 @@ public class QuestionDAO {
     }
 
 
-    public List<Question> getQuestion() throws Exception {
+    public List<Question> getQuestion(int roleId) throws Exception {
 
         List<Question> questions = new ArrayList<>();
 
@@ -71,12 +73,15 @@ public class QuestionDAO {
             myConn = dataSource.getConnection();
 
 
-            String sql = "select * from Questions";
-            String join = "select * from Questions join Users U on Questions.UserId = U.UserId";
-
-            myStmt = myConn.createStatement();
-
-            myRs = myStmt.executeQuery(join);
+            if(roleId==2) {
+                String join = "select * from Questions join Users U on Questions.UserId = U.UserId WHERE Accepted=0";
+                myStmt = myConn.createStatement();
+                myRs = myStmt.executeQuery(join);
+            }else {
+                String join = "select * from Questions join Users U on Questions.UserId = U.UserId WHERE Accepted=1";
+                myStmt = myConn.createStatement();
+                myRs = myStmt.executeQuery(join);
+            }
 
             while (myRs.next()) {
 
@@ -90,11 +95,13 @@ public class QuestionDAO {
 
                 int userId = myRs.getInt("UserId");
                 String userName = myRs.getString("UserName");
-                int roleId = myRs.getInt("RoleId");
+               // int roleId = myRs.getInt("RoleId");
                 String password = myRs.getString("Password");
+                boolean accepted = myRs.getBoolean("Accepted");
+
 
                 User tempUser = new User(userId, userName, roleId, password);
-                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId, Title, Question, CategoryId, tempUser);
+                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId, Title, Question, CategoryId, tempUser, accepted);
 
                 questions.add(tempQuestion);
             }
@@ -170,8 +177,8 @@ public class QuestionDAO {
             myConn = dataSource.getConnection();
 
             String sql = "insert into Questions "
-                    + "(Date , UserId, Title, Question, CategoryId) "
-                    + "values (?, ?, ?, ?, ?)";
+                    + "(Date , UserId, Title, Question, CategoryId, Accepted) "
+                    + "values (?, ?, ?, ?, ?, ?)";
 
             myStmt = myConn.prepareStatement(sql);
 
@@ -180,6 +187,8 @@ public class QuestionDAO {
             myStmt.setString(3, theQuestion.getTitle());
             myStmt.setString(4, theQuestion.getQuestion());
             myStmt.setInt(5, theQuestion.getCategoryId());
+            myStmt.setBoolean(6, theQuestion.isAccepted());
+
 
             myStmt.execute();
         } finally {
@@ -221,9 +230,10 @@ public class QuestionDAO {
                 String userName = myRs.getString("UserName");
                 int roleId = myRs.getInt("RoleId");
                 String password = myRs.getString("Password");
+                boolean accepted = myRs.getBoolean("Accepted");
 
                 User tempUser = new User(userId, userName, roleId, password);
-                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId, Title, Question, CategoryId, tempUser);
+                Question tempQuestion = new Question(QuestionId, (java.sql.Date) Date, UserId, Title, Question, CategoryId, tempUser, accepted);
 
                 questions.add(tempQuestion);
             }
@@ -238,4 +248,45 @@ public class QuestionDAO {
 
         return questions;
     }
+
+    public void deleteQuestion(String theQuestionId) throws Exception {
+        Connection myConn = null;
+        PreparedStatement myStmt = null;
+
+        try {
+            int questionId = Integer.parseInt(theQuestionId);
+
+            myConn = dataSource.getConnection();
+            String sql = "delete from Questions where QuestionId=?";
+            myStmt = myConn.prepareStatement(sql);
+            myStmt.setInt(1, questionId);
+            myStmt.execute();
+        } finally {
+            close(myConn, myStmt, null);
+        }
+    }
+
+    public void acceptQuestion(int questionId) throws SQLException {
+        Connection myConn = null;
+        PreparedStatement myStmt = null;
+
+        try {
+
+            myConn = dataSource.getConnection();
+
+            String sql = "update Questions "
+                    + "set Accepted=1 "
+                    + "where QuestionId=?";
+
+            myStmt = myConn.prepareStatement(sql);
+
+            myStmt.setInt(1, questionId);
+
+
+            myStmt.execute();
+        } finally {
+            close(myConn, myStmt, null);
+        }
+    }
+
 }

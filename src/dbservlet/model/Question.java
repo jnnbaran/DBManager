@@ -12,6 +12,7 @@ public class Question {
     private String question;
     private int categoryId;
     private User user;
+    private boolean accepted;
 
 
     public Question(int questionId, java.sql.Date date, int userId, String title, String question, int categoryId) {
@@ -23,7 +24,7 @@ public class Question {
         this.categoryId = categoryId;
     }
 
-    public Question(int questionId, java.sql.Date date, int userId, String title, String question, int categoryId, User user) {
+    public Question(int questionId, java.sql.Date date, int userId, String title, String question, int categoryId, User user, boolean accepted) {
         this.questionId = questionId;
         this.date = date;
         this.userId = userId;
@@ -31,14 +32,16 @@ public class Question {
         this.question = question;
         this.categoryId = categoryId;
         this.user = user;
+        this.accepted = accepted;
     }
 
-    public Question(java.sql.Date date, int userId, String title, String question, int categoryId) {
+    public Question(java.sql.Date date, int userId, String title, String question, int categoryId, boolean accepted) {
         this.date = date;
         this.userId = userId;
         this.title = title;
         this.question = question;
         this.categoryId = categoryId;
+        this.accepted = accepted;
     }
 
 
@@ -108,5 +111,13 @@ public class Question {
                 ", question='" + question + '\'' +
                 ", categoryId='" + categoryId + '\'' +
                 '}';
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 }

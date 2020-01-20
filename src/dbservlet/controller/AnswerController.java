@@ -1,11 +1,9 @@
 package dbservlet.controller;
 
-import dbservlet.dao.AnswerDAO;
-import dbservlet.dao.CategoryDAO;
-import dbservlet.dao.QuestionDAO;
-import dbservlet.dao.RatingDAO;
+import dbservlet.dao.*;
 import dbservlet.model.Answer;
 import dbservlet.model.Category;
+import dbservlet.model.Comment;
 import dbservlet.model.Question;
 import org.w3c.dom.ls.LSOutput;
 
@@ -35,6 +33,8 @@ public class AnswerController extends HttpServlet {
     private AnswerDAO answerDAO;
     private QuestionDAO questionDAO;
     private RatingDAO ratingDAO;
+    private CommentDAO commentDAO;
+
 
 
     @Override
@@ -44,6 +44,7 @@ public class AnswerController extends HttpServlet {
             answerDAO = new AnswerDAO(dataSource);
             questionDAO = new QuestionDAO(dataSource);
             ratingDAO = new RatingDAO(dataSource);
+            commentDAO = new CommentDAO(dataSource);
         }
         catch (Exception exc) {
             throw new ServletException(exc);
@@ -65,6 +66,12 @@ public class AnswerController extends HttpServlet {
                 case "DELETE":
                     deleteAnswer(request, response);
                     break;
+                case "updateRating":
+                    updateRating(request, response);
+                    break;
+                case "addComment":
+                    addComment(request, response);
+                    break;
                 default:
                     listAnswer(request, response);
             }
@@ -73,6 +80,23 @@ public class AnswerController extends HttpServlet {
             throw new ServletException(exc);
         }
     }
+
+    private void addComment(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        int userId = (int) session.getAttribute("userId");
+        java.util.Date datee = new java.util.Date();//date object
+        java.sql.Date date = new java.sql.Date(datee.getTime());
+        String comment = request.getParameter("comment");
+        int answerId = Integer.parseInt(request.getParameter("answerId"));
+
+
+        Comment theComment = new Comment(userId, answerId, date, comment);
+        commentDAO.addComment(theComment);
+        listAnswer(request, response);
+
+    }
+
+
     private void deleteAnswer(HttpServletRequest request, HttpServletResponse response) {
     }
     private void loadAnswer(HttpServletRequest request, HttpServletResponse response) {
@@ -81,18 +105,14 @@ public class AnswerController extends HttpServlet {
         HttpSession session = request.getSession();
         String theQuestionId = request.getParameter("questionId");
         int questionId = Integer.parseInt(theQuestionId);
-
-
-
         Object userId = session.getAttribute("userId");
         String answer = request.getParameter("answer");
-
-        java.util.Date datee = new java.util.Date();//date object
+        java.util.Date datee = new java.util.Date();
         java.sql.Date date = new java.sql.Date(datee.getTime());
 
         Answer theAnswer = new Answer(date, answer, questionId, userId);
         answerDAO.addAnswer(theAnswer);
-        listAnswer(request, response);
+
 
     }
 
@@ -104,12 +124,22 @@ public class AnswerController extends HttpServlet {
 
         List<Answer> answers = answerDAO.getAnswer(questionIdd);
         fetchRatingForAnswers(answers, (int)request.getSession().getAttribute("userId"));
+        fetchCommentsForAnswers(answers);
         request.setAttribute("ANSWER_LIST", answers);
+
+      /*  for (Answer answer: answers
+             ) {
+            List<Comment> comments = commentDAO.getComment(answer.getAnswerId());
+            request.setAttribute("COMMENTS_LIST", comments);
+        }
+*/
         RequestDispatcher dispatcher = request.getRequestDispatcher("/answers.jsp");
         dispatcher.forward(request, response);
+
+
     }
 
-    private void fetchRatingForAnswers(List<Answer> answers, int currentUserId) throws SQLException {
+    private void fetchRatingForAnswers(List<Answer> answers, int currentUserId) throws Exception {
         for (Answer answer: answers) {
             answer.setRating(ratingDAO.getRating(answer.getAnswerId(), true));
             answer.setNegativeRating(ratingDAO.getRating(answer.getAnswerId(), false));
@@ -117,7 +147,29 @@ public class AnswerController extends HttpServlet {
         }
     }
 
-    private void updateRating(Answer answer, int currentUserId, boolean rating) throws SQLException {
-        ratingDAO.updateUserRating(answer.getAnswerId(), currentUserId, rating);
+    private void fetchCommentsForAnswers(List<Answer> answers)throws Exception{
+        for (Answer answer: answers) {
+            answer.setComments(commentDAO.getComment(answer.getAnswerId()));
+        }
     }
+    private void updateRating(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        Integer currentUserId = (Integer) session.getAttribute("userId");
+        int answerId = Integer.parseInt(request.getParameter("answerId"));
+        String vote = request.getParameter("vote");
+
+        switch (vote) {
+            case "upvote":
+                ratingDAO.updateUserRating(answerId, currentUserId, true);
+                break;
+            case "downvote":
+                ratingDAO.updateUserRating(answerId, currentUserId, false);
+                break;
+        }
+
+
+        listAnswer(request,response);
+
+    }
+
 }
