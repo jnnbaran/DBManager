@@ -101,7 +101,8 @@ public class AnswerController extends HttpServlet {
     }
     private void addAnswer(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
-        String theQuestionId = request.getParameter("questionId");
+       // String theQuestionId = request.getParameter("questionId");
+        String theQuestionId = (String) session.getAttribute("questionId");
         int questionId = Integer.parseInt(theQuestionId);
         Object userId = session.getAttribute("userId");
         String answer = request.getParameter("answer");
@@ -115,14 +116,17 @@ public class AnswerController extends HttpServlet {
         Question theQuestion= questionDAO.getQuestion(theQuestionId);
         request.setAttribute("THE_QUESTION", theQuestion);
 
-        listAnswer(request, response);
+        listAnswerAgain(request, response);
 
 
 
     }
 
     private void listAnswer(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
         String theQuestionId = request.getParameter("questionId");
+        session.setAttribute("questionId", theQuestionId);
+
         Question theQuestion= questionDAO.getQuestion(theQuestionId);
         request.setAttribute("THE_QUESTION", theQuestion);
         int questionIdd = Integer.parseInt(theQuestionId);
@@ -143,6 +147,26 @@ public class AnswerController extends HttpServlet {
 
 
     }
+    private void listAnswerAgain(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        String theQuestionId = (String) session.getAttribute("questionId");
+        session.setAttribute("questionId", theQuestionId);
+
+        Question theQuestion= questionDAO.getQuestion(theQuestionId);
+        request.setAttribute("THE_QUESTION", theQuestion);
+        int questionIdd = Integer.parseInt(theQuestionId);
+
+        List<Answer> answers = answerDAO.getAnswer(questionIdd);
+        fetchRatingForAnswers(answers, (int)request.getSession().getAttribute("userId"));
+        fetchCommentsForAnswers(answers);
+        request.setAttribute("ANSWER_LIST", answers);
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/answers.jsp");
+        dispatcher.forward(request, response);
+
+
+    }
+
 
     private void fetchRatingForAnswers(List<Answer> answers, int currentUserId) throws Exception {
         for (Answer answer: answers) {

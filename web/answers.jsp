@@ -118,12 +118,11 @@
             <c:param name="command" value="ADD" />
             <c:param name="answerId" value="${tempAnswer.answerId}"/>
             <c:param name="questionId" value="${tempAnswer.questionId}"/>
-
         </c:url>
 
         <form action="AnswerServlet" method="get">
             <br />
-            <input hidden name="questionId" value="${tempAnswer.questionId}">
+            <input hidden name="questionId" value="${theQuestion}">
             <textarea style="width: 60rem"  rows="5"  name="answer" placeholder ="your answer"></textarea>
             <br/>
             <button class="btn btn-secondary" name="command" value="ADD"> POST YOUR ANSWER </button>
