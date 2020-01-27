@@ -90,7 +90,7 @@ public class AnswerController extends HttpServlet {
         int answerId = Integer.parseInt(request.getParameter("answerId"));
         Comment theComment = new Comment(userId, answerId, date, comment);
         commentDAO.addComment(theComment);
-        listAnswer(request, response);
+        listAnswerAgain(request, response);
 
     }
 
