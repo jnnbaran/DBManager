@@ -98,18 +98,20 @@
 
     </form>
 
-        <form style=" display: flex; align-items: end; justify-content: end;" action="AnswerServlet" method="get">
-            <div class = "comments"  >
-                <p style="text-align: initial; font-size: small ">${tempAnswer.comments}</p>
+    <form style=" display: flex; align-items: end; justify-content: end;" action="AnswerServlet" method="get">
+        <c:forEach var="tempComment" items="${tempAnswer.comments}">
+            <div class = "comments">
+                <p style="text-align: initial; font-size: small ">${tempComment.comment}</p>
                 <hr/>
             </div>
-            <div style="display: flex; flex-direction: row; justify-content: flex-end">
-                <textarea style="width: 40rem; color: #bbbbbb"  rows="1"  name="comment" placeholder ="add a comment" ></textarea>
-                <input hidden name="answerId" value="${tempAnswer.answerId}">
-                <button name="command" value="addComment"> ADD </button>
-            </div>
-            <hr/>
-        </form>
+        </c:forEach>
+        <div style="display: flex; flex-direction: row; justify-content: flex-end">
+            <textarea style="width: 40rem; color: #bbbbbb"  rows="1"  name="comment" placeholder ="add a comment" ></textarea>
+            <input hidden name="answerId" value="${tempAnswer.answerId}">
+            <button name="command" value="addComment"> ADD </button>
+        </div>
+        <hr/>
+    </form>
 
 
     </c:forEach>
