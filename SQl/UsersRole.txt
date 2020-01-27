@@ -1,6 +1,0 @@
-create table UsersRole
-(
-    RoleId int(4)       not null
-        primary key,
-    Role   varchar(100) null
-);
