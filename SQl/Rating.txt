@@ -1,0 +1,12 @@
+create table Rating
+(
+    RatingId int(4) auto_increment
+        primary key,
+    UserId   int       not null,
+    AnswerId int       not null,
+    Rating   binary(1) not null comment '{0,1}',
+    constraint Rating_ibfk_1
+        foreign key (UserId) references Users (UserId),
+    constraint Rating_ibfk_2
+        foreign key (AnswerId) references Answers (AnswerId)
+);

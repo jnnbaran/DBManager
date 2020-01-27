@@ -1,0 +1,7 @@
+create table Category
+(
+    CategoryId int         not null
+        primary key,
+    Category   varchar(25) null
+);
+

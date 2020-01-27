@@ -88,8 +88,6 @@ public class AnswerController extends HttpServlet {
         java.sql.Date date = new java.sql.Date(datee.getTime());
         String comment = request.getParameter("comment");
         int answerId = Integer.parseInt(request.getParameter("answerId"));
-
-
         Comment theComment = new Comment(userId, answerId, date, comment);
         commentDAO.addComment(theComment);
         listAnswer(request, response);
@@ -112,6 +110,13 @@ public class AnswerController extends HttpServlet {
 
         Answer theAnswer = new Answer(date, answer, questionId, userId);
         answerDAO.addAnswer(theAnswer);
+
+
+        Question theQuestion= questionDAO.getQuestion(theQuestionId);
+        request.setAttribute("THE_QUESTION", theQuestion);
+
+        listAnswer(request, response);
+
 
 
     }
@@ -166,10 +171,6 @@ public class AnswerController extends HttpServlet {
                 ratingDAO.updateUserRating(answerId, currentUserId, false);
                 break;
         }
-
-
         listAnswer(request,response);
-
     }
-
 }

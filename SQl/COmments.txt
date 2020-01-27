@@ -1,0 +1,13 @@
+create table Comments
+(
+    CommentId int auto_increment
+        primary key,
+    UserID    int          null,
+    AnswerID  int          null,
+    Date      date         null,
+    Comment   varchar(150) null,
+    constraint Comments_ibfk_1
+        foreign key (UserID) references Users (UserId),
+    constraint Comments_ibfk_2
+        foreign key (AnswerID) references Answers (AnswerId)
+);

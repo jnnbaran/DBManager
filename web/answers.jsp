@@ -99,37 +99,44 @@
     </form>
 
         <form style=" display: flex; align-items: end; justify-content: end;" action="AnswerServlet" method="get">
-
             <div class = "comments"  >
-                    <p style="text-align: initial; font-size: small ">${tempAnswer.comments}</p>
-
-                <hr/><hr/>
+                <p style="text-align: initial; font-size: small ">${tempAnswer.comments}</p>
+                <hr/>
             </div>
             <div style="display: flex; flex-direction: row; justify-content: flex-end">
-                    <textarea style="width: 40rem; color: #bbbbbb"  rows="1"  name="comment" placeholder ="add a comment" ></textarea>
+                <textarea style="width: 40rem; color: #bbbbbb"  rows="1"  name="comment" placeholder ="add a comment" ></textarea>
                 <input hidden name="answerId" value="${tempAnswer.answerId}">
-                    <button name="command" value="addComment"> ADD </button>
+                <button name="command" value="addComment"> ADD </button>
             </div>
-
-
             <hr/>
         </form>
+
+
     </c:forEach>
 
+        <c:url var="newAnswer" value="AnswerServlet">
+            <c:param name="command" value="ADD" />
+            <c:param name="answerId" value="${tempAnswer.answerId}"/>
+            <c:param name="questionId" value="${tempAnswer.questionId}"/>
 
+        </c:url>
 
-    <br />
-    <textarea style="width: 60rem"  rows="5"  name="answer" placeholder ="your answer"></textarea>
-    <br/>
-    <button class="btn btn-secondary" name="command" value="ADD"> POST YOUR ANSWER </button>
-    <!-- połączyć przycisk z dodawaniem odpowiedzi -->
+        <form action="AnswerServlet" method="get">
+            <br />
+            <input hidden name="questionId" value="${tempAnswer.questionId}">
+            <textarea style="width: 60rem"  rows="5"  name="answer" placeholder ="your answer"></textarea>
+            <br/>
+            <button class="btn btn-secondary" name="command" value="ADD"> POST YOUR ANSWER </button>
         </form>
 
 
-</div>
+
+    </div>
 </div>
 
-<script type = "text/javascript" src="./script/counter.js"></script>
+
+</div>
+</div>
 
 </body>
 </html>
