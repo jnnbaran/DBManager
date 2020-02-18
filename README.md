@@ -10,3 +10,6 @@ MySQL <br>
 Bootstrap 4/CSS/JS<br>
 IntelliJ IDEA <br>
 Apache tomcat 8 <br>
+
+
+<a href="https://drive.google.com/file/d/18dgPGrBMz1OxU-86giUa3aMxy70Turvu/view?usp=sharing">DOCUMENTATION IN POLISH</a>
